@@ -1,0 +1,44 @@
+{
+  "name": "@slabs/fields",
+  "version": "0.0.0",
+  "description": "ACF-like field system for Slabs blocks",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "happy-dom": "^20.0.10",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  },
+  "keywords": [
+    "fields",
+    "forms",
+    "acf",
+    "custom-fields",
+    "slabs"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@codexteam/icons": "^0.3.3"
+  }
+}

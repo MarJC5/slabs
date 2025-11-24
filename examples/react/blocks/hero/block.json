@@ -1,0 +1,43 @@
+{
+  "name": "slabs/hero",
+  "title": "Hero",
+  "description": "Hero section with headline, subheadline, and call-to-action",
+  "category": "content",
+  "icon": "Picture",
+  "collapsible": false,
+  "fields": {
+    "headline": {
+      "type": "text",
+      "label": "Headline",
+      "required": true,
+      "placeholder": "Welcome to our product"
+    },
+    "subheadline": {
+      "type": "wysiwyg",
+      "label": "Subheadline",
+      "mode": "minimal",
+      "placeholder": "A brief description of what you offer",
+      "hint": "Use bold and italic to emphasize text"
+    },
+    "ctaText": {
+      "type": "text",
+      "label": "Call-to-Action Text",
+      "placeholder": "Get Started"
+    },
+    "ctaLink": {
+      "type": "text",
+      "label": "Call-to-Action Link",
+      "placeholder": "https://example.com"
+    },
+    "backgroundStyle": {
+      "type": "select",
+      "label": "Background Style",
+      "options": [
+        { "value": "light", "label": "Light" },
+        { "value": "dark", "label": "Dark" },
+        { "value": "accent", "label": "Accent" }
+      ],
+      "default": "light"
+    }
+  }
+}

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slabs - Public View</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: white;
+      color: hsl(0 0% 3.9%);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: white;
+      border-bottom: 1px solid hsl(0 0% 89.8%);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex: 1;
+    }
+
+    .header h1 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: hsl(0 0% 3.9%);
+    }
+
+    .nav {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .nav-link {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: hsl(0 0% 45.1%);
+      text-decoration: none;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .nav-link:hover {
+      color: hsl(0 0% 9%);
+      background: hsl(0 0% 96.1%);
+    }
+
+    .nav-link.active {
+      color: hsl(0 0% 9%);
+      background: hsl(0 0% 96.1%);
+      border-color: hsl(0 0% 89.8%);
+    }
+
+    .content-container {
+      flex: 1;
+      width: 100%;
+      background: white;
+      overflow-y: auto;
+    }
+
+    .content-wrapper {
+      margin: 0 auto;
+      background: white;
+      min-height: 100%;
+    }
+
+    .slabs-content > * {
+      margin-bottom: 1.5rem;
+    }
+
+    .slabs-content > *:last-child {
+      margin-bottom: 0;
+    }
+
+    .empty-state {
+      padding: 4rem 2rem;
+      text-align: center;
+      color: hsl(0 0% 45.1%);
+    }
+
+    .empty-state h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: hsl(0 0% 9%);
+    }
+
+    .empty-state p {
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .empty-state a {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: hsl(0 0% 9%);
+      color: hsl(0 0% 98%);
+      text-decoration: none;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .empty-state a:hover {
+      background: hsl(0 0% 20%);
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .header-left {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+      }
+
+      .content-wrapper {
+        padding: 2rem 1.5rem;
+      }
+
+      .empty-state {
+        padding: 3rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="content-container">
+    <div class="content-wrapper">
+      <div id="content">
+        <div class="empty-state">
+          <h2>No content yet</h2>
+          <p>Create some content in the editor first</p>
+          <a href="/admin.html">Go to Editor</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

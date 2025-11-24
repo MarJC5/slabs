@@ -1,0 +1,27 @@
+{
+  "name": "@slabs/example-react",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@slabs/client": "workspace:*",
+    "@slabs/fields": "workspace:*",
+    "@slabs/renderer": "workspace:*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "editorjs": "npm:@editorjs/editorjs@^2.30.7"
+  },
+  "devDependencies": {
+    "@slabs/vite-plugin": "workspace:*",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.21"
+  }
+}

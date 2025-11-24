@@ -1,0 +1,55 @@
+{
+  "name": "slabs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "WordPress Gutenberg-like Block System for Editor.js",
+  "keywords": [
+    "editorjs",
+    "blocks",
+    "gutenberg",
+    "cms",
+    "vite"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MarJC5/slabs.git"
+  },
+  "license": "MIT",
+  "author": "Martin Jean-Christio <dev@misits.ch>",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "build": "pnpm -r --filter='./packages/*' run build",
+    "dev": "pnpm -r --parallel --filter='./packages/*' run dev",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "type-check": "pnpm -r --filter='./packages/*' run type-check",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "clean": "pnpm -r --parallel run clean && rm -rf node_modules",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "@types/node": "^20.11.5",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "@vitest/ui": "^1.2.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.4",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11",
+    "vitest": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.1"
+}

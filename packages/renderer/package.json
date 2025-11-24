@@ -1,0 +1,38 @@
+{
+  "name": "@slabs/renderer",
+  "version": "0.0.0",
+  "description": "Lightweight browser runtime for rendering Slabs blocks on public pages",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@slabs/vite-plugin": "workspace:*",
+    "@types/node": "^20.10.6",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
+  },
+  "keywords": [
+    "editorjs",
+    "blocks",
+    "renderer",
+    "display",
+    "slabs"
+  ],
+  "author": "",
+  "license": "MIT"
+}
