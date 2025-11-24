@@ -139,6 +139,42 @@ describe('RadioField', () => {
 
       expect(inputs[1]?.checked).toBe(true);
     });
+
+    it('should auto-select first option when required and no value/default provided', () => {
+      const config: FieldConfigData = {
+        type: 'radio',
+        required: true,
+        options: [
+          { value: 'draft', label: 'Draft' },
+          { value: 'published', label: 'Published' },
+          { value: 'archived', label: 'Archived' }
+        ]
+      };
+
+      const element = radioField.render(config, '');
+      const inputs = element.querySelectorAll('input[type="radio"]') as NodeListOf<HTMLInputElement>;
+
+      expect(inputs[0]?.checked).toBe(true);
+      expect(inputs[1]?.checked).toBe(false);
+      expect(inputs[2]?.checked).toBe(false);
+    });
+
+    it('should not auto-select when not required', () => {
+      const config: FieldConfigData = {
+        type: 'radio',
+        required: false,
+        options: [
+          { value: 'a', label: 'A' },
+          { value: 'b', label: 'B' }
+        ]
+      };
+
+      const element = radioField.render(config, '');
+      const inputs = element.querySelectorAll('input[type="radio"]') as NodeListOf<HTMLInputElement>;
+
+      expect(inputs[0]?.checked).toBe(false);
+      expect(inputs[1]?.checked).toBe(false);
+    });
   });
 
   describe('extract', () => {

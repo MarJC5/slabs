@@ -28,7 +28,7 @@ export class FieldRenderer {
       wrapper.classList.add(config.className);
     }
 
-    // Render label
+    // Render label for all field types
     if (config.label) {
       const label = document.createElement('label');
       label.classList.add('slabs-field__label');
@@ -48,6 +48,11 @@ export class FieldRenderer {
       description.textContent = config.description;
       wrapper.appendChild(description);
     }
+
+    // Add inline validation error container
+    const errorContainer = document.createElement('div');
+    errorContainer.classList.add('slabs-field__error');
+    wrapper.appendChild(errorContainer);
 
     return wrapper;
   }

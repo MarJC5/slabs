@@ -237,12 +237,18 @@ Define fields in `block.json` with automatic UI generation:
 **Supported Field Types:**
 - `text` - Single line text input
 - `textarea` - Multi-line text input
-- `number` - Numeric input with min/max
+- `number` - Numeric input with min/max/step
+- `email` - Email input with validation
+- `link` - URL/link input
 - `select` - Dropdown selection
 - `checkbox` - Boolean toggle
 - `radio` - Radio button group
-- `date` - Date picker
+- `range` - Slider with min/max
+- `image` - Image upload
 - `color` - Color picker
+- `date` - Date picker
+- `wysiwyg` - Rich text editor (minimal/full modes)
+- `repeater` - Repeatable field groups (ACF-like)
 
 **Field Configuration:**
 ```json
@@ -281,6 +287,50 @@ Save editor space with expandable blocks:
 }
 ```
 
+### Repeater Field
+
+Create repeatable field groups like ACF:
+
+```json
+{
+  "fields": {
+    "team_members": {
+      "type": "repeater",
+      "label": "Team Members",
+      "min": 1,
+      "max": 10,
+      "buttonLabel": "Add Team Member",
+      "required": true,
+      "fields": {
+        "name": {
+          "type": "text",
+          "label": "Name",
+          "required": true
+        },
+        "role": {
+          "type": "text",
+          "label": "Role"
+        },
+        "email": {
+          "type": "email",
+          "label": "Email"
+        }
+      }
+    }
+  }
+}
+```
+
+**Saved data structure:**
+```json
+{
+  "team_members": [
+    { "name": "John Doe", "role": "CEO", "email": "john@example.com" },
+    { "name": "Jane Smith", "role": "CTO", "email": "jane@example.com" }
+  ]
+}
+```
+
 ---
 
 ## Architecture
@@ -302,7 +352,7 @@ Save editor space with expandable blocks:
                   virtual:slabs-registry
                          │
         ┌────────────────┴────────────────┐
-        ↓                                  ↓
+        ↓                                 ↓
 ┌──────────────────┐              ┌──────────────────┐
 │ Runtime (Browser)│              │ Runtime (Browser)│
 ├──────────────────┤              ├──────────────────┤

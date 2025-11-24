@@ -155,7 +155,7 @@ body {
   max-width: 1000px;
   margin: 0 auto;
   background: white;
-  min-height: 100%;
+  min-height: 10dvh;
 }
 
 .editor-container {

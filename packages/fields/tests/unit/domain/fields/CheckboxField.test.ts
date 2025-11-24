@@ -10,64 +10,74 @@ describe('CheckboxField', () => {
   });
 
   describe('render', () => {
-    it('should render an input element with type checkbox', () => {
+    it('should render a label container with checkbox input inside', () => {
       const config: FieldConfigData = {
         type: 'checkbox',
         label: 'Featured'
       };
 
       const element = checkboxField.render(config, false);
+      const input = element.querySelector('input[type="checkbox"]');
 
-      expect(element.tagName).toBe('INPUT');
-      expect(element.getAttribute('type')).toBe('checkbox');
+      expect(element.tagName).toBe('LABEL');
+      expect(input).not.toBeNull();
+      expect(input?.getAttribute('type')).toBe('checkbox');
     });
 
     it('should set checked state from boolean value', () => {
-      const config: FieldConfigData = { type: 'checkbox' };
-      const element = checkboxField.render(config, true) as HTMLInputElement;
+      const config: FieldConfigData = { type: 'checkbox', label: 'Test' };
+      const element = checkboxField.render(config, true);
+      const input = element.querySelector('input[type="checkbox"]') as HTMLInputElement;
 
-      expect(element.checked).toBe(true);
+      expect(input.checked).toBe(true);
     });
 
     it('should set unchecked state for false value', () => {
-      const config: FieldConfigData = { type: 'checkbox' };
-      const element = checkboxField.render(config, false) as HTMLInputElement;
+      const config: FieldConfigData = { type: 'checkbox', label: 'Test' };
+      const element = checkboxField.render(config, false);
+      const input = element.querySelector('input[type="checkbox"]') as HTMLInputElement;
 
-      expect(element.checked).toBe(false);
+      expect(input.checked).toBe(false);
     });
 
     it('should use defaultValue when value is undefined', () => {
       const config: FieldConfigData = {
         type: 'checkbox',
+        label: 'Test',
         defaultValue: true
       };
 
-      const element = checkboxField.render(config, undefined) as HTMLInputElement;
+      const element = checkboxField.render(config, undefined);
+      const input = element.querySelector('input[type="checkbox"]') as HTMLInputElement;
 
-      expect(element.checked).toBe(true);
+      expect(input.checked).toBe(true);
     });
 
     it('should default to unchecked when no value or defaultValue', () => {
-      const config: FieldConfigData = { type: 'checkbox' };
-      const element = checkboxField.render(config, undefined) as HTMLInputElement;
+      const config: FieldConfigData = { type: 'checkbox', label: 'Test' };
+      const element = checkboxField.render(config, undefined);
+      const input = element.querySelector('input[type="checkbox"]') as HTMLInputElement;
 
-      expect(element.checked).toBe(false);
+      expect(input.checked).toBe(false);
     });
 
     it('should apply required attribute', () => {
       const config: FieldConfigData = {
         type: 'checkbox',
+        label: 'Test',
         required: true
       };
 
-      const element = checkboxField.render(config, false) as HTMLInputElement;
+      const element = checkboxField.render(config, false);
+      const input = element.querySelector('input[type="checkbox"]') as HTMLInputElement;
 
-      expect(element.required).toBe(true);
+      expect(input.required).toBe(true);
     });
 
     it('should apply custom className', () => {
       const config: FieldConfigData = {
         type: 'checkbox',
+        label: 'Test',
         className: 'custom-checkbox'
       };
 
@@ -77,17 +87,19 @@ describe('CheckboxField', () => {
     });
 
     it('should handle truthy string values', () => {
-      const config: FieldConfigData = { type: 'checkbox' };
-      const element = checkboxField.render(config, 'true') as HTMLInputElement;
+      const config: FieldConfigData = { type: 'checkbox', label: 'Test' };
+      const element = checkboxField.render(config, 'true');
+      const input = element.querySelector('input[type="checkbox"]') as HTMLInputElement;
 
-      expect(element.checked).toBe(true);
+      expect(input.checked).toBe(true);
     });
 
     it('should handle number 1 as true', () => {
-      const config: FieldConfigData = { type: 'checkbox' };
-      const element = checkboxField.render(config, 1) as HTMLInputElement;
+      const config: FieldConfigData = { type: 'checkbox', label: 'Test' };
+      const element = checkboxField.render(config, 1);
+      const input = element.querySelector('input[type="checkbox"]') as HTMLInputElement;
 
-      expect(element.checked).toBe(true);
+      expect(input.checked).toBe(true);
     });
   });
 

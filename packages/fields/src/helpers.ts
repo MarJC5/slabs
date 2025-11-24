@@ -179,29 +179,46 @@ export function renderBlockEditor(config: BlockEditorConfig): HTMLElement {
     containerClass: 'slabs-fields'
   });
 
-  // Add validation feedback
-  const validationMessage = document.createElement('div');
-  validationMessage.className = 'validation-message';
-
-  // Add change listener for real-time validation
+  // Add change listener for real-time inline validation
   fieldsContainer.addEventListener('input', () => {
     const currentData = extractDataFromFields(fieldsContainer);
     const result = validateFields(config.fields, currentData);
 
+    // Clear all previous error messages
+    const allErrorContainers = fieldsContainer.querySelectorAll('.slabs-field__error');
+    allErrorContainers.forEach((container) => {
+      container.textContent = '';
+      container.classList.remove('slabs-field__error--visible');
+    });
+
+    // Show inline errors for each field
     if (!result.valid) {
-      validationMessage.className = 'validation-message validation-message--warning';
-      const errorList = result.errors.map((e: any) => `• ${e.message}`).join('<br>');
-      validationMessage.innerHTML = `<strong>Validation Issues:</strong><br>${errorList}`;
+      result.errors.forEach((error: any) => {
+        // Find the field wrapper by matching the error field name to config label
+        const fieldWrapper = Array.from(fieldsContainer.querySelectorAll('.slabs-field')).find(
+          (wrapper) => {
+            const fieldName = wrapper.getAttribute('data-field-name');
+            if (!fieldName) return false;
+            const fieldConfig = config.fields[fieldName];
+            const fieldLabel = fieldConfig?.label || fieldName;
+            return error.field === fieldLabel;
+          }
+        );
+
+        if (fieldWrapper) {
+          const errorContainer = fieldWrapper.querySelector('.slabs-field__error');
+          if (errorContainer) {
+            errorContainer.textContent = error.message;
+            errorContainer.classList.add('slabs-field__error--visible');
+          }
+        }
+      });
 
       // Call custom validation handler if provided
       if (config.onValidate) {
         config.onValidate(currentData, result.errors);
       }
     } else {
-      // Hide validation message when all fields are valid
-      validationMessage.className = 'validation-message';
-      validationMessage.innerHTML = '';
-
       // Call custom validation handler if provided
       if (config.onValidate) {
         config.onValidate(currentData, []);
@@ -210,7 +227,6 @@ export function renderBlockEditor(config: BlockEditorConfig): HTMLElement {
   });
 
   content.appendChild(fieldsContainer);
-  content.appendChild(validationMessage);
 
   // Add click handler for collapse/expand
   header.addEventListener('click', () => {

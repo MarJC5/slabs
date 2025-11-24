@@ -23,8 +23,35 @@ export class FieldExtractor {
 
     // If no data-field-type, determine from element type
     if (!fieldType) {
-      if (input instanceof HTMLInputElement) {
-        fieldType = input.type === 'number' ? 'number' : 'text';
+      // Check for composite/complex field types first
+      if (input.classList.contains('slabs-field-link')) {
+        fieldType = 'link';
+      }
+      else if (input.classList.contains('image-field')) {
+        fieldType = 'image';
+      }
+      else if (input.classList.contains('repeater-field')) {
+        fieldType = 'repeater';
+      }
+      // Check for radio group (container with multiple radio inputs)
+      else if (input.classList.contains('slabs-field__radio-group')) {
+        fieldType = 'radio';
+      }
+      // Check for checkbox (label container with checkbox input)
+      else if (input.classList.contains('slabs-field__checkbox-option')) {
+        fieldType = 'checkbox';
+      }
+      // Check for boolean field (checkbox or switch display)
+      else if (input.classList.contains('slabs-field__boolean-checkbox') || input.classList.contains('slabs-field__boolean-switch')) {
+        fieldType = 'boolean';
+      }
+      // Check for number wrapper (container with prefix/suffix)
+      else if (input.classList.contains('slabs-field__number-wrapper')) {
+        fieldType = 'number';
+      }
+      // Standard input types
+      else if (input instanceof HTMLInputElement) {
+        fieldType = input.type;
       } else if (input instanceof HTMLSelectElement) {
         fieldType = 'select';
       } else if (input instanceof HTMLTextAreaElement) {

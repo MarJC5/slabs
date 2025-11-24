@@ -49,6 +49,30 @@ export class NumberField implements FieldType {
       input.classList.add(config.className);
     }
 
+    // If prefix or suffix is provided, wrap in a container
+    if (config.prefix || config.suffix) {
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('slabs-field__number-wrapper');
+
+      if (config.prefix) {
+        const prefixSpan = document.createElement('span');
+        prefixSpan.classList.add('slabs-field__number-prefix');
+        prefixSpan.textContent = config.prefix;
+        wrapper.appendChild(prefixSpan);
+      }
+
+      wrapper.appendChild(input);
+
+      if (config.suffix) {
+        const suffixSpan = document.createElement('span');
+        suffixSpan.classList.add('slabs-field__number-suffix');
+        suffixSpan.textContent = config.suffix;
+        wrapper.appendChild(suffixSpan);
+      }
+
+      return wrapper;
+    }
+
     return input;
   }
 
@@ -56,17 +80,27 @@ export class NumberField implements FieldType {
    * Extract value from input element
    */
   extract(element: HTMLElement): any {
-    if (!(element instanceof HTMLInputElement)) {
+    let input: HTMLInputElement | null = null;
+
+    // Check if element is the input directly
+    if (element instanceof HTMLInputElement && element.type === 'number') {
+      input = element;
+    } else {
+      // Look for input inside wrapper
+      input = element.querySelector('input[type="number"]');
+    }
+
+    if (!input) {
       return null;
     }
 
     // Return null for empty input
-    if (element.value === '') {
+    if (input.value === '') {
       return null;
     }
 
     // Parse as number
-    const numValue = parseFloat(element.value);
+    const numValue = parseFloat(input.value);
 
     // Return null if not a valid number
     if (isNaN(numValue)) {

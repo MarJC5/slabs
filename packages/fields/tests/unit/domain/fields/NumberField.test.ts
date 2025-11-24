@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { NumberField } from '../../../../src/domain/fields/NumberField';
-import type { FieldConfigData, ValidationResult } from '../../../../src/domain/types';
+import type { FieldConfigData } from '../../../../src/domain/types';
 
 describe('NumberField', () => {
   let numberField: NumberField;
@@ -104,6 +104,54 @@ describe('NumberField', () => {
       const element = numberField.render(config, '');
 
       expect(element.classList.contains('custom-number')).toBe(true);
+    });
+
+    it('should render with prefix when provided', () => {
+      const config: FieldConfigData = {
+        type: 'number',
+        prefix: '$'
+      };
+
+      const element = numberField.render(config, 100);
+      const prefix = element.querySelector('.slabs-field__number-prefix');
+      const input = element.querySelector('input[type="number"]') as HTMLInputElement;
+
+      expect(element.classList.contains('slabs-field__number-wrapper')).toBe(true);
+      expect(prefix?.textContent).toBe('$');
+      expect(input?.value).toBe('100');
+    });
+
+    it('should render with suffix when provided', () => {
+      const config: FieldConfigData = {
+        type: 'number',
+        suffix: 'kg'
+      };
+
+      const element = numberField.render(config, 75);
+      const suffix = element.querySelector('.slabs-field__number-suffix');
+      const input = element.querySelector('input[type="number"]') as HTMLInputElement;
+
+      expect(element.classList.contains('slabs-field__number-wrapper')).toBe(true);
+      expect(suffix?.textContent).toBe('kg');
+      expect(input?.value).toBe('75');
+    });
+
+    it('should render with both prefix and suffix', () => {
+      const config: FieldConfigData = {
+        type: 'number',
+        prefix: '$',
+        suffix: 'USD'
+      };
+
+      const element = numberField.render(config, 50);
+      const prefix = element.querySelector('.slabs-field__number-prefix');
+      const suffix = element.querySelector('.slabs-field__number-suffix');
+      const input = element.querySelector('input[type="number"]') as HTMLInputElement;
+
+      expect(element.classList.contains('slabs-field__number-wrapper')).toBe(true);
+      expect(prefix?.textContent).toBe('$');
+      expect(suffix?.textContent).toBe('USD');
+      expect(input?.value).toBe('50');
     });
   });
 

@@ -10,7 +10,7 @@ export class RadioField implements FieldType {
    */
   render(config: FieldConfigData, value: any): HTMLElement {
     const container = document.createElement('div');
-    container.classList.add('radio-group');
+    container.classList.add('slabs-field__radio-group');
 
     // Apply custom className
     if (config.className) {
@@ -21,20 +21,29 @@ export class RadioField implements FieldType {
     const groupName = `radio-${Math.random().toString(36).substr(2, 9)}`;
 
     // Determine selected value
-    const selectedValue = value !== '' && value !== null && value !== undefined
+    let selectedValue = value !== '' && value !== null && value !== undefined
       ? String(value)
       : (config.defaultValue !== undefined ? String(config.defaultValue) : '');
+
+    // If required and no value/default is set, use the first option
+    if (config.required && selectedValue === '' && config.options && config.options.length > 0) {
+      const firstOption = config.options[0];
+      if (firstOption) {
+        selectedValue = String(firstOption.value);
+      }
+    }
 
     // Render each option
     if (config.options) {
       for (const option of config.options) {
         const label = document.createElement('label');
-        label.classList.add('radio-option');
+        label.classList.add('slabs-field__radio-option');
 
         const input = document.createElement('input');
         input.type = 'radio';
         input.name = groupName;
         input.value = String(option.value);
+        input.classList.add('slabs-field__radio-input');
 
         // Set checked state
         if (String(option.value) === selectedValue) {
@@ -46,10 +55,12 @@ export class RadioField implements FieldType {
           input.required = true;
         }
 
-        const labelText = document.createTextNode(` ${option.label}`);
+        const labelSpan = document.createElement('span');
+        labelSpan.classList.add('slabs-field__radio-label');
+        labelSpan.textContent = option.label;
 
         label.appendChild(input);
-        label.appendChild(labelText);
+        label.appendChild(labelSpan);
         container.appendChild(label);
       }
     }

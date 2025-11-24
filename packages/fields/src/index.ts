@@ -24,13 +24,20 @@ export { VALID_FIELD_TYPES } from './domain/types';
 export { TextField } from './domain/fields/TextField';
 export { TextareaField } from './domain/fields/TextareaField';
 export { NumberField } from './domain/fields/NumberField';
+export { EmailField } from './domain/fields/EmailField';
+export { PasswordField } from './domain/fields/PasswordField';
+export { LinkField } from './domain/fields/LinkField';
 export { SelectField } from './domain/fields/SelectField';
 export { CheckboxField } from './domain/fields/CheckboxField';
+export { BooleanField } from './domain/fields/BooleanField';
 export { RadioField } from './domain/fields/RadioField';
 export { RangeField } from './domain/fields/RangeField';
 export { ImageField } from './domain/fields/ImageField';
 export { ColorField } from './domain/fields/ColorField';
 export { DateField } from './domain/fields/DateField';
+export { WysiwygField } from './domain/fields/WysiwygField';
+export { RepeaterField } from './domain/fields/RepeaterField';
+export { TabField } from './domain/fields/TabField';
 
 // Export domain services
 export { FieldRegistry } from './domain/FieldRegistry';

@@ -4,6 +4,7 @@ import { TextareaField } from './fields/TextareaField';
 import { NumberField } from './fields/NumberField';
 import { SelectField } from './fields/SelectField';
 import { CheckboxField } from './fields/CheckboxField';
+import { BooleanField } from './fields/BooleanField';
 import { RadioField } from './fields/RadioField';
 import { RangeField } from './fields/RangeField';
 import { ImageField } from './fields/ImageField';
@@ -11,7 +12,10 @@ import { ColorField } from './fields/ColorField';
 import { DateField } from './fields/DateField';
 import { WysiwygField } from './fields/WysiwygField';
 import { EmailField } from './fields/EmailField';
+import { PasswordField } from './fields/PasswordField';
 import { LinkField } from './fields/LinkField';
+import { RepeaterField } from './fields/RepeaterField';
+import { TabField } from './fields/TabField';
 
 /**
  * FieldRegistry - Repository for managing field types
@@ -78,6 +82,7 @@ export class FieldRegistry {
     registry.register('number', new NumberField());
     registry.register('select', new SelectField());
     registry.register('checkbox', new CheckboxField());
+    registry.register('boolean', new BooleanField());
     registry.register('radio', new RadioField());
     registry.register('range', new RangeField());
     registry.register('image', new ImageField());
@@ -85,7 +90,15 @@ export class FieldRegistry {
     registry.register('date', new DateField());
     registry.register('wysiwyg', new WysiwygField());
     registry.register('email', new EmailField());
+    registry.register('password', new PasswordField());
     registry.register('link', new LinkField());
+    registry.register('repeater', new RepeaterField());
+
+    // Register TabField and initialize it with the registry (to avoid circular dependency)
+    const tabField = new TabField();
+    registry.register('tabs', tabField);
+    tabField.setRegistry(registry);
+
     return registry;
   }
 }

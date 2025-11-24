@@ -9,8 +9,12 @@ export class CheckboxField implements FieldType {
    * Render checkbox element
    */
   render(config: FieldConfigData, value: any): HTMLElement {
+    const container = document.createElement('label');
+    container.classList.add('slabs-field__checkbox-option');
+
     const input = document.createElement('input');
     input.setAttribute('type', 'checkbox');
+    input.classList.add('slabs-field__checkbox-input');
 
     // Determine checked state
     let isChecked = false;
@@ -36,23 +40,35 @@ export class CheckboxField implements FieldType {
       input.required = true;
     }
 
-    // Apply custom className
+    // Apply custom className to container
     if (config.className) {
-      input.classList.add(config.className);
+      container.classList.add(config.className);
     }
 
-    return input;
+    container.appendChild(input);
+
+    return container;
   }
 
   /**
    * Extract value from checkbox element
    */
   extract(element: HTMLElement): any {
-    if (!(element instanceof HTMLInputElement) || element.type !== 'checkbox') {
+    // If element is the label container, find the input inside
+    let input: HTMLInputElement | null = null;
+
+    if (element instanceof HTMLInputElement && element.type === 'checkbox') {
+      input = element;
+    } else {
+      // Look for checkbox input inside the container
+      input = element.querySelector('input[type="checkbox"]');
+    }
+
+    if (!input) {
       return false;
     }
 
-    return element.checked;
+    return input.checked;
   }
 
   /**

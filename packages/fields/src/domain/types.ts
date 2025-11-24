@@ -20,6 +20,7 @@ export interface FieldConfigData {
   pattern?: RegExp;
   description?: string;
   hint?: string;
+  autocomplete?: string;  // password, email, text - browser autocomplete hints
 
   // Type-specific options
   rows?: number;  // textarea
@@ -32,6 +33,10 @@ export interface FieldConfigData {
   maxSize?: number;  // image
   showValue?: boolean;  // range
   mode?: 'minimal' | 'full';  // wysiwyg
+  display?: 'checkbox' | 'switch';  // boolean - display mode
+  buttonLabel?: string;  // repeater - custom "Add Row" button text
+  layout?: 'row' | 'block';  // repeater - compact vs full-width layout
+  fields?: Record<string, FieldConfigData>;  // repeater - nested field definitions
 }
 
 /**
@@ -80,14 +85,20 @@ export const VALID_FIELD_TYPES = [
   'text',
   'textarea',
   'number',
+  'email',
+  'password',
+  'link',
   'select',
   'checkbox',
+  'boolean',
   'radio',
   'range',
   'image',
   'color',
   'date',
-  'wysiwyg'
+  'wysiwyg',
+  'repeater',
+  'tabs'
 ] as const;
 
 export type ValidFieldType = typeof VALID_FIELD_TYPES[number];
