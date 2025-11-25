@@ -371,7 +371,7 @@ const editor = new EditorJS({
 ├──────────────────┤              ├──────────────────┤
 │                  │              │                  │
 │ @slabs/client    │              │ @slabs/renderer  │
-│ + @slabs/fields   │              │                  │
+│ + @slabs/fields  │              │                  │
 │ ─────────────    │              │ ─────────────    │
 │ - Edit blocks    │              │ - Display blocks │
 │ - Save data      │              │ - Read-only      │
