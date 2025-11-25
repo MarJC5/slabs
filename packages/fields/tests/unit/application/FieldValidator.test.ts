@@ -260,4 +260,334 @@ describe('FieldValidator', () => {
       expect(result.fieldErrors?.age).toBeDefined();
     });
   });
+
+  describe('conditional field validation', () => {
+    it('should skip validation for conditionally hidden field', () => {
+      const fields: Record<string, FieldConfigData> = {
+        showAdvanced: {
+          type: 'boolean',
+          label: 'Show Advanced'
+        },
+        advancedSettings: {
+          type: 'text',
+          label: 'Advanced Settings',
+          required: true,
+          conditional: {
+            field: 'showAdvanced',
+            operator: '==',
+            value: true
+          }
+        }
+      };
+
+      const data = {
+        showAdvanced: false,
+        advancedSettings: '' // Empty but hidden
+      };
+
+      const result = validator.validate(fields, data);
+
+      // Should be valid because advancedSettings is hidden
+      expect(result.valid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
+
+    it('should validate conditionally visible field', () => {
+      const fields: Record<string, FieldConfigData> = {
+        showAdvanced: {
+          type: 'boolean',
+          label: 'Show Advanced'
+        },
+        advancedSettings: {
+          type: 'text',
+          label: 'Advanced Settings',
+          required: true,
+          conditional: {
+            field: 'showAdvanced',
+            operator: '==',
+            value: true
+          }
+        }
+      };
+
+      const data = {
+        showAdvanced: true,
+        advancedSettings: '' // Empty and visible
+      };
+
+      const result = validator.validate(fields, data);
+
+      // Should be invalid because advancedSettings is visible and required
+      expect(result.valid).toBe(false);
+      expect(result.errors.length).toBeGreaterThan(0);
+      expect(result.errors[0]?.field).toBe('Advanced Settings');
+    });
+
+    it('should handle multiple conditional fields correctly', () => {
+      const fields: Record<string, FieldConfigData> = {
+        layoutType: {
+          type: 'select',
+          label: 'Layout',
+          options: [
+            { value: 'grid', label: 'Grid' },
+            { value: 'list', label: 'List' }
+          ]
+        },
+        columns: {
+          type: 'number',
+          label: 'Columns',
+          required: true,
+          conditional: {
+            field: 'layoutType',
+            operator: '==',
+            value: 'grid'
+          }
+        },
+        itemsPerRow: {
+          type: 'number',
+          label: 'Items Per Row',
+          required: true,
+          conditional: {
+            field: 'layoutType',
+            operator: '==',
+            value: 'grid'
+          }
+        }
+      };
+
+      const data = {
+        layoutType: 'list',
+        columns: undefined, // Missing but hidden
+        itemsPerRow: undefined // Missing but hidden
+      };
+
+      const result = validator.validate(fields, data);
+
+      // Should be valid because both conditional fields are hidden
+      expect(result.valid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
+
+    it('should validate only visible conditional fields in mixed scenario', () => {
+      const fields: Record<string, FieldConfigData> = {
+        enableFeatureA: {
+          type: 'boolean',
+          label: 'Enable Feature A'
+        },
+        enableFeatureB: {
+          type: 'boolean',
+          label: 'Enable Feature B'
+        },
+        featureAConfig: {
+          type: 'text',
+          label: 'Feature A Config',
+          required: true,
+          conditional: {
+            field: 'enableFeatureA',
+            operator: '==',
+            value: true
+          }
+        },
+        featureBConfig: {
+          type: 'text',
+          label: 'Feature B Config',
+          required: true,
+          conditional: {
+            field: 'enableFeatureB',
+            operator: '==',
+            value: true
+          }
+        }
+      };
+
+      const data = {
+        enableFeatureA: true,
+        enableFeatureB: false,
+        featureAConfig: '', // Empty and visible - should fail
+        featureBConfig: '' // Empty but hidden - should pass
+      };
+
+      const result = validator.validate(fields, data);
+
+      expect(result.valid).toBe(false);
+      expect(result.errors).toHaveLength(1);
+      expect(result.errors[0]?.field).toBe('Feature A Config');
+      expect(result.fieldErrors).toBeDefined();
+      expect(result.fieldErrors?.featureAConfig).toBeDefined();
+      expect(result.fieldErrors?.featureBConfig).toBeUndefined();
+    });
+
+    it('should handle chained conditionals', () => {
+      const fields: Record<string, FieldConfigData> = {
+        enableCustomization: {
+          type: 'boolean',
+          label: 'Enable Customization'
+        },
+        customizationType: {
+          type: 'select',
+          label: 'Customization Type',
+          options: [
+            { value: 'color', label: 'Color' },
+            { value: 'layout', label: 'Layout' }
+          ],
+          conditional: {
+            field: 'enableCustomization',
+            operator: '==',
+            value: true
+          }
+        },
+        backgroundColor: {
+          type: 'color',
+          label: 'Background Color',
+          required: true,
+          conditional: {
+            field: 'customizationType',
+            operator: '==',
+            value: 'color'
+          }
+        }
+      };
+
+      const data = {
+        enableCustomization: false,
+        customizationType: undefined,
+        backgroundColor: '' // Missing but double-hidden
+      };
+
+      const result = validator.validate(fields, data);
+
+      // backgroundColor should be skipped because customizationType is hidden
+      expect(result.valid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
+
+    it('should handle missing watched field gracefully', () => {
+      const fields: Record<string, FieldConfigData> = {
+        conditionalField: {
+          type: 'text',
+          label: 'Conditional Field',
+          required: true,
+          conditional: {
+            field: 'nonExistentField',
+            operator: '==',
+            value: true
+          }
+        }
+      };
+
+      const data = {
+        conditionalField: ''
+      };
+
+      // Should skip validation because watched field doesn't exist
+      const result = validator.validate(fields, data);
+      expect(result.valid).toBe(true);
+    });
+
+    it('should handle comparison operators for conditionals', () => {
+      const fields: Record<string, FieldConfigData> = {
+        quantity: {
+          type: 'number',
+          label: 'Quantity'
+        },
+        bulkDiscount: {
+          type: 'number',
+          label: 'Bulk Discount',
+          required: true,
+          conditional: {
+            field: 'quantity',
+            operator: '>',
+            value: 10
+          }
+        }
+      };
+
+      const dataHidden = {
+        quantity: 5,
+        bulkDiscount: undefined
+      };
+
+      const resultHidden = validator.validate(fields, dataHidden);
+      expect(resultHidden.valid).toBe(true);
+
+      const dataVisible = {
+        quantity: 15,
+        bulkDiscount: undefined
+      };
+
+      const resultVisible = validator.validate(fields, dataVisible);
+      expect(resultVisible.valid).toBe(false);
+    });
+
+    it('should handle empty/not_empty operators', () => {
+      const fields: Record<string, FieldConfigData> = {
+        customTitle: {
+          type: 'text',
+          label: 'Custom Title'
+        },
+        titleStyle: {
+          type: 'select',
+          label: 'Title Style',
+          required: true,
+          options: [
+            { value: 'bold', label: 'Bold' },
+            { value: 'italic', label: 'Italic' }
+          ],
+          conditional: {
+            field: 'customTitle',
+            operator: 'not_empty',
+            value: null
+          }
+        }
+      };
+
+      const dataEmpty = {
+        customTitle: '',
+        titleStyle: undefined
+      };
+
+      const resultEmpty = validator.validate(fields, dataEmpty);
+      expect(resultEmpty.valid).toBe(true);
+
+      const dataNotEmpty = {
+        customTitle: 'My Title',
+        titleStyle: undefined
+      };
+
+      const resultNotEmpty = validator.validate(fields, dataNotEmpty);
+      expect(resultNotEmpty.valid).toBe(false);
+    });
+
+    it('should validate fields without conditionals normally', () => {
+      const fields: Record<string, FieldConfigData> = {
+        normalField: {
+          type: 'text',
+          label: 'Normal Field',
+          required: true
+        },
+        conditionalField: {
+          type: 'text',
+          label: 'Conditional Field',
+          required: true,
+          conditional: {
+            field: 'trigger',
+            operator: '==',
+            value: true
+          }
+        }
+      };
+
+      const data = {
+        normalField: '', // Should fail
+        trigger: false,
+        conditionalField: '' // Should pass (hidden)
+      };
+
+      const result = validator.validate(fields, data);
+
+      expect(result.valid).toBe(false);
+      expect(result.errors).toHaveLength(1);
+      expect(result.errors[0]?.field).toBe('Normal Field');
+    });
+  });
 });

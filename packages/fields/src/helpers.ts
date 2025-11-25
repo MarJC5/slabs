@@ -65,9 +65,17 @@ export function renderFields(
 
 /**
  * Extract field data from rendered container
+ * @param element - The HTML element containing rendered fields
+ * @param fields - Optional field configurations for handling conditional logic
+ *                 If not provided, will attempt to retrieve from element's stored config
  */
-export function extractFieldData(element: HTMLElement): Record<string, any> {
-  return defaultExtractor.extract(element);
+export function extractFieldData(
+  element: HTMLElement,
+  fields?: Record<string, FieldConfigData>
+): Record<string, any> {
+  // If fields not provided, try to retrieve from stored config (set by renderBlockEditor)
+  const fieldsConfig = fields || (element as any).__slabsFieldsConfig;
+  return defaultExtractor.extract(element, fieldsConfig);
 }
 
 /**
@@ -179,9 +187,12 @@ export function renderBlockEditor(config: BlockEditorConfig): HTMLElement {
     containerClass: 'slabs-fields'
   });
 
+  // Store fields configuration for extraction
+  (fieldsContainer as any).__slabsFieldsConfig = config.fields;
+
   // Add change listener for real-time inline validation
   fieldsContainer.addEventListener('input', () => {
-    const currentData = extractDataFromFields(fieldsContainer);
+    const currentData = extractDataFromFields(fieldsContainer, config.fields);
     const result = validateFields(config.fields, currentData);
 
     // Clear all previous error messages
@@ -244,6 +255,9 @@ export function renderBlockEditor(config: BlockEditorConfig): HTMLElement {
  * Uses the default FieldExtractor to properly handle all field types
  * @internal
  */
-function extractDataFromFields(container: HTMLElement): Record<string, any> {
-  return defaultExtractor.extract(container);
+function extractDataFromFields(
+  container: HTMLElement,
+  fields?: Record<string, FieldConfigData>
+): Record<string, any> {
+  return defaultExtractor.extract(container, fields);
 }

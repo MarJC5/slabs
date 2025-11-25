@@ -1,0 +1,151 @@
+{
+  "name": "slabs/pricing",
+  "title": "Pricing Card",
+  "description": "Flexible pricing card with conditional features based on plan type",
+  "category": "content",
+  "icon": "Money",
+  "collapsible": false,
+  "fields": {
+    "planName": {
+      "type": "text",
+      "label": "Plan Name",
+      "required": true,
+      "placeholder": "Basic"
+    },
+    "planType": {
+      "type": "select",
+      "label": "Plan Type",
+      "options": [
+        { "value": "basic", "label": "Basic" },
+        { "value": "pro", "label": "Professional" },
+        { "value": "enterprise", "label": "Enterprise" }
+      ],
+      "required": true
+    },
+    "price": {
+      "type": "number",
+      "label": "Price (Monthly)",
+      "required": true,
+      "min": 0,
+      "placeholder": "29"
+    },
+    "currency": {
+      "type": "text",
+      "label": "Currency Symbol",
+      "default": "$",
+      "placeholder": "$"
+    },
+    "description": {
+      "type": "textarea",
+      "label": "Plan Description",
+      "placeholder": "Perfect for individuals getting started",
+      "rows": 3
+    },
+    "showAnnualBilling": {
+      "type": "boolean",
+      "label": "Show Annual Billing Option"
+    },
+    "annualPrice": {
+      "type": "number",
+      "label": "Annual Price (per month)",
+      "required": true,
+      "min": 0,
+      "placeholder": "24",
+      "hint": "Price per month when billed annually",
+      "conditional": {
+        "field": "showAnnualBilling",
+        "operator": "==",
+        "value": true
+      }
+    },
+    "annualSavings": {
+      "type": "text",
+      "label": "Annual Savings Text",
+      "placeholder": "Save 20%",
+      "conditional": {
+        "field": "showAnnualBilling",
+        "operator": "==",
+        "value": true
+      }
+    },
+    "apiAccess": {
+      "type": "boolean",
+      "label": "Include API Access",
+      "hint": "Available for Pro and Enterprise plans",
+      "conditional": {
+        "field": "planType",
+        "operator": "in",
+        "value": ["pro", "enterprise"]
+      }
+    },
+    "apiCallsLimit": {
+      "type": "number",
+      "label": "API Calls per Month",
+      "required": true,
+      "min": 1000,
+      "placeholder": "10000",
+      "conditional": {
+        "field": "apiAccess",
+        "operator": "==",
+        "value": true
+      }
+    },
+    "prioritySupport": {
+      "type": "boolean",
+      "label": "Priority Support",
+      "hint": "Enterprise-only feature",
+      "conditional": {
+        "field": "planType",
+        "operator": "==",
+        "value": "enterprise"
+      }
+    },
+    "supportEmail": {
+      "type": "email",
+      "label": "Dedicated Support Email",
+      "required": true,
+      "placeholder": "support@company.com",
+      "conditional": {
+        "field": "prioritySupport",
+        "operator": "==",
+        "value": true
+      }
+    },
+    "customBranding": {
+      "type": "boolean",
+      "label": "Custom Branding Available",
+      "conditional": {
+        "field": "planType",
+        "operator": "in",
+        "value": ["pro", "enterprise"]
+      }
+    },
+    "brandColor": {
+      "type": "color",
+      "label": "Brand Color",
+      "placeholder": "#0066cc",
+      "conditional": {
+        "field": "customBranding",
+        "operator": "==",
+        "value": true
+      }
+    },
+    "buttonText": {
+      "type": "text",
+      "label": "Button Text",
+      "placeholder": "Get Started",
+      "required": true
+    },
+    "buttonLink": {
+      "type": "text",
+      "label": "Button Link",
+      "placeholder": "https://example.com/signup",
+      "required": true
+    },
+    "featured": {
+      "type": "boolean",
+      "label": "Featured Plan",
+      "hint": "Highlight this plan with special styling"
+    }
+  }
+}

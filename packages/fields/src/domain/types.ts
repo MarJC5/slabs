@@ -5,6 +5,37 @@
 /**
  * Field configuration data
  */
+/**
+ * Conditional operator types
+ */
+export type ConditionalOperator =
+  | '=='          // Equal
+  | '!='          // Not equal
+  | '>'           // Greater than
+  | '<'           // Less than
+  | '>='          // Greater than or equal
+  | '<='          // Less than or equal
+  | 'contains'    // String/array contains value
+  | 'not_contains'  // String/array does not contain value
+  | 'in'          // Value is in array
+  | 'not_in'      // Value is not in array
+  | 'empty'       // Field is empty (null, undefined, '', [], {})
+  | 'not_empty';  // Field is not empty
+
+/**
+ * Conditional display configuration (value object)
+ */
+export interface ConditionalConfig {
+  /** Field name to watch */
+  field: string;
+
+  /** Comparison operator */
+  operator: ConditionalOperator;
+
+  /** Value to compare against */
+  value: any;
+}
+
 export interface FieldConfigData {
   type: string;
   label?: string;
@@ -21,6 +52,9 @@ export interface FieldConfigData {
   description?: string;
   hint?: string;
   autocomplete?: string;  // password, email, text - browser autocomplete hints
+
+  // Conditional display
+  conditional?: ConditionalConfig;
 
   // Type-specific options
   rows?: number;  // textarea

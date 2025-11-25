@@ -197,4 +197,340 @@ describe('FieldExtractor', () => {
       expect(extractedData).toEqual({ test: null });
     });
   });
+
+  describe('conditional field extraction', () => {
+    it('should set conditionally hidden field to null', () => {
+      const fields: Record<string, FieldConfigData> = {
+        showAdvanced: {
+          type: 'boolean',
+          label: 'Show Advanced'
+        },
+        advancedSettings: {
+          type: 'text',
+          label: 'Advanced Settings',
+          conditional: {
+            field: 'showAdvanced',
+            operator: '==',
+            value: true
+          }
+        }
+      };
+
+      const data = {
+        showAdvanced: false,
+        advancedSettings: 'some value'
+      };
+
+      const container = renderer.render(fields, data);
+      const extractedData = extractor.extract(container, fields);
+
+      // Hidden field should be set to null
+      expect(extractedData.showAdvanced).toBe(false);
+      expect(extractedData.advancedSettings).toBeNull();
+    });
+
+    it('should extract conditionally visible field normally', () => {
+      const fields: Record<string, FieldConfigData> = {
+        showAdvanced: {
+          type: 'boolean',
+          label: 'Show Advanced'
+        },
+        advancedSettings: {
+          type: 'text',
+          label: 'Advanced Settings',
+          conditional: {
+            field: 'showAdvanced',
+            operator: '==',
+            value: true
+          }
+        }
+      };
+
+      const data = {
+        showAdvanced: true,
+        advancedSettings: 'my settings'
+      };
+
+      const container = renderer.render(fields, data);
+      const extractedData = extractor.extract(container, fields);
+
+      // Visible field should be extracted normally
+      expect(extractedData.showAdvanced).toBe(true);
+      expect(extractedData.advancedSettings).toBe('my settings');
+    });
+
+    it('should handle multiple conditional fields', () => {
+      const fields: Record<string, FieldConfigData> = {
+        layoutType: {
+          type: 'select',
+          label: 'Layout',
+          options: [
+            { value: 'grid', label: 'Grid' },
+            { value: 'list', label: 'List' }
+          ]
+        },
+        columns: {
+          type: 'number',
+          label: 'Columns',
+          conditional: {
+            field: 'layoutType',
+            operator: '==',
+            value: 'grid'
+          }
+        },
+        itemsPerRow: {
+          type: 'number',
+          label: 'Items Per Row',
+          conditional: {
+            field: 'layoutType',
+            operator: '==',
+            value: 'grid'
+          }
+        }
+      };
+
+      const data = {
+        layoutType: 'list',
+        columns: 3,
+        itemsPerRow: 4
+      };
+
+      const container = renderer.render(fields, data);
+      const extractedData = extractor.extract(container, fields);
+
+      // Both hidden fields should be null
+      expect(extractedData.layoutType).toBe('list');
+      expect(extractedData.columns).toBeNull();
+      expect(extractedData.itemsPerRow).toBeNull();
+    });
+
+    it('should extract mixed visible and hidden conditional fields', () => {
+      const fields: Record<string, FieldConfigData> = {
+        enableFeatureA: {
+          type: 'boolean',
+          label: 'Enable Feature A'
+        },
+        enableFeatureB: {
+          type: 'boolean',
+          label: 'Enable Feature B'
+        },
+        featureAConfig: {
+          type: 'text',
+          label: 'Feature A Config',
+          conditional: {
+            field: 'enableFeatureA',
+            operator: '==',
+            value: true
+          }
+        },
+        featureBConfig: {
+          type: 'text',
+          label: 'Feature B Config',
+          conditional: {
+            field: 'enableFeatureB',
+            operator: '==',
+            value: true
+          }
+        }
+      };
+
+      const data = {
+        enableFeatureA: true,
+        enableFeatureB: false,
+        featureAConfig: 'config A',
+        featureBConfig: 'config B'
+      };
+
+      const container = renderer.render(fields, data);
+      const extractedData = extractor.extract(container, fields);
+
+      expect(extractedData.enableFeatureA).toBe(true);
+      expect(extractedData.enableFeatureB).toBe(false);
+      expect(extractedData.featureAConfig).toBe('config A'); // Visible
+      expect(extractedData.featureBConfig).toBeNull(); // Hidden
+    });
+
+    it('should handle chained conditionals', () => {
+      const fields: Record<string, FieldConfigData> = {
+        enableCustomization: {
+          type: 'boolean',
+          label: 'Enable Customization'
+        },
+        customizationType: {
+          type: 'select',
+          label: 'Customization Type',
+          options: [
+            { value: 'color', label: 'Color' },
+            { value: 'layout', label: 'Layout' }
+          ],
+          conditional: {
+            field: 'enableCustomization',
+            operator: '==',
+            value: true
+          }
+        },
+        backgroundColor: {
+          type: 'color',
+          label: 'Background Color',
+          conditional: {
+            field: 'customizationType',
+            operator: '==',
+            value: 'color'
+          }
+        }
+      };
+
+      const data = {
+        enableCustomization: false,
+        customizationType: 'color',
+        backgroundColor: '#ff0000'
+      };
+
+      const container = renderer.render(fields, data);
+      const extractedData = extractor.extract(container, fields);
+
+      expect(extractedData.enableCustomization).toBe(false);
+      expect(extractedData.customizationType).toBeNull(); // Hidden
+      expect(extractedData.backgroundColor).toBeNull(); // Double hidden
+    });
+
+    it('should handle comparison operators', () => {
+      const fields: Record<string, FieldConfigData> = {
+        quantity: {
+          type: 'number',
+          label: 'Quantity'
+        },
+        bulkDiscount: {
+          type: 'number',
+          label: 'Bulk Discount',
+          conditional: {
+            field: 'quantity',
+            operator: '>',
+            value: 10
+          }
+        }
+      };
+
+      const dataHidden = {
+        quantity: 5,
+        bulkDiscount: 15
+      };
+
+      const containerHidden = renderer.render(fields, dataHidden);
+      const extractedHidden = extractor.extract(containerHidden, fields);
+
+      expect(extractedHidden.quantity).toBe(5);
+      expect(extractedHidden.bulkDiscount).toBeNull(); // Hidden (5 <= 10)
+
+      const dataVisible = {
+        quantity: 15,
+        bulkDiscount: 20
+      };
+
+      const containerVisible = renderer.render(fields, dataVisible);
+      const extractedVisible = extractor.extract(containerVisible, fields);
+
+      expect(extractedVisible.quantity).toBe(15);
+      expect(extractedVisible.bulkDiscount).toBe(20); // Visible (15 > 10)
+    });
+
+    it('should handle empty/not_empty operators', () => {
+      const fields: Record<string, FieldConfigData> = {
+        customTitle: {
+          type: 'text',
+          label: 'Custom Title'
+        },
+        titleStyle: {
+          type: 'select',
+          label: 'Title Style',
+          options: [
+            { value: 'bold', label: 'Bold' },
+            { value: 'italic', label: 'Italic' }
+          ],
+          conditional: {
+            field: 'customTitle',
+            operator: 'not_empty',
+            value: null
+          }
+        }
+      };
+
+      const dataEmpty = {
+        customTitle: '',
+        titleStyle: 'bold'
+      };
+
+      const containerEmpty = renderer.render(fields, dataEmpty);
+      const extractedEmpty = extractor.extract(containerEmpty, fields);
+
+      expect(extractedEmpty.customTitle).toBe('');
+      expect(extractedEmpty.titleStyle).toBeNull(); // Hidden
+
+      const dataNotEmpty = {
+        customTitle: 'My Title',
+        titleStyle: 'italic'
+      };
+
+      const containerNotEmpty = renderer.render(fields, dataNotEmpty);
+      const extractedNotEmpty = extractor.extract(containerNotEmpty, fields);
+
+      expect(extractedNotEmpty.customTitle).toBe('My Title');
+      expect(extractedNotEmpty.titleStyle).toBe('italic'); // Visible
+    });
+
+    it('should extract fields without conditionals normally', () => {
+      const fields: Record<string, FieldConfigData> = {
+        normalField: {
+          type: 'text',
+          label: 'Normal Field'
+        },
+        conditionalField: {
+          type: 'text',
+          label: 'Conditional Field',
+          conditional: {
+            field: 'trigger',
+            operator: '==',
+            value: true
+          }
+        }
+      };
+
+      const data = {
+        normalField: 'always visible',
+        trigger: false,
+        conditionalField: 'hidden value'
+      };
+
+      const container = renderer.render(fields, data);
+      const extractedData = extractor.extract(container, fields);
+
+      expect(extractedData.normalField).toBe('always visible');
+      expect(extractedData.conditionalField).toBeNull();
+    });
+
+    it('should work without fields parameter (backward compatibility)', () => {
+      const fields: Record<string, FieldConfigData> = {
+        name: {
+          type: 'text',
+          label: 'Name'
+        },
+        age: {
+          type: 'number',
+          label: 'Age'
+        }
+      };
+
+      const data = {
+        name: 'John Doe',
+        age: 30
+      };
+
+      const container = renderer.render(fields, data);
+      // Call without fields parameter
+      const extractedData = extractor.extract(container);
+
+      expect(extractedData.name).toBe('John Doe');
+      expect(extractedData.age).toBe(30);
+    });
+  });
 });

@@ -1,12 +1,17 @@
 import type { FieldConfigData, ValidationResult, ValidationError } from '../domain/types';
 import type { FieldRegistry } from '../domain/FieldRegistry';
+import { ConditionalEvaluator } from '../domain/ConditionalEvaluator';
 
 /**
  * FieldValidator - Application service for validating field data
  * Orchestrates validation across multiple fields and aggregates results
  */
 export class FieldValidator {
-  constructor(private registry: FieldRegistry) {}
+  private conditionalEvaluator: ConditionalEvaluator;
+
+  constructor(private registry: FieldRegistry) {
+    this.conditionalEvaluator = new ConditionalEvaluator();
+  }
 
   /**
    * Validate a single field
@@ -19,6 +24,7 @@ export class FieldValidator {
   /**
    * Validate multiple fields
    * Returns aggregated validation result with all errors
+   * Skips validation for fields that are conditionally hidden
    */
   validate(
     fields: Record<string, FieldConfigData>,
@@ -29,6 +35,27 @@ export class FieldValidator {
 
     // Validate each field
     for (const [name, config] of Object.entries(fields)) {
+      // Skip validation if field is conditionally hidden
+      if (config.conditional) {
+        const watchedFieldName = config.conditional.field;
+        const watchedFieldValue = data[watchedFieldName];
+
+        // If watched field doesn't exist, skip validation (field is hidden)
+        if (!(watchedFieldName in fields)) {
+          continue;
+        }
+
+        // Evaluate conditional - if false, field is hidden, skip validation
+        const isVisible = this.conditionalEvaluator.evaluate(
+          config.conditional,
+          watchedFieldValue
+        );
+
+        if (!isVisible) {
+          continue;
+        }
+      }
+
       const value = data[name];
       const result = this.validateField(config, value);
 

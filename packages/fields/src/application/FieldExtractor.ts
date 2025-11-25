@@ -1,11 +1,17 @@
 import type { FieldRegistry } from '../domain/FieldRegistry';
+import type { FieldConfigData } from '../domain/types';
+import { ConditionalEvaluator } from '../domain/ConditionalEvaluator';
 
 /**
  * FieldExtractor - Application service for extracting data from rendered fields
  * Handles the orchestration of data extraction from DOM elements
  */
 export class FieldExtractor {
-  constructor(private registry: FieldRegistry) {}
+  private conditionalEvaluator: ConditionalEvaluator;
+
+  constructor(private registry: FieldRegistry) {
+    this.conditionalEvaluator = new ConditionalEvaluator();
+  }
 
   /**
    * Extract value from a single field element
@@ -92,14 +98,20 @@ export class FieldExtractor {
 
   /**
    * Extract data from all fields in a container
+   * @param container - The HTML container element with rendered fields
+   * @param fieldsConfig - Optional field configurations for handling conditional logic
    */
-  extract(container: HTMLElement): Record<string, any> {
+  extract(
+    container: HTMLElement,
+    fieldsConfig?: Record<string, FieldConfigData>
+  ): Record<string, any> {
     const data: Record<string, any> = {};
 
     // Find all field elements that are DIRECT children (not nested in repeater/group/flexible)
     // We need to exclude fields that are inside repeater rows, group fields, or flexible layouts
     const fields = container.querySelectorAll('.slabs-field[data-field-name]');
 
+    // First pass: extract all field values
     for (const field of Array.from(fields)) {
       const fieldName = field.getAttribute('data-field-name');
       if (!fieldName) continue;
@@ -112,6 +124,32 @@ export class FieldExtractor {
 
       const value = this.extractField(field as HTMLElement);
       data[fieldName] = value;
+    }
+
+    // Second pass: handle conditional fields (set hidden fields to null)
+    if (fieldsConfig) {
+      for (const [fieldName, config] of Object.entries(fieldsConfig)) {
+        if (config.conditional) {
+          const watchedFieldName = config.conditional.field;
+          const watchedFieldValue = data[watchedFieldName];
+
+          // If watched field doesn't exist, set conditional field to null (hidden)
+          if (!(watchedFieldName in fieldsConfig)) {
+            data[fieldName] = null;
+            continue;
+          }
+
+          // Evaluate conditional - if false, field is hidden, set to null
+          const isVisible = this.conditionalEvaluator.evaluate(
+            config.conditional,
+            watchedFieldValue
+          );
+
+          if (!isVisible) {
+            data[fieldName] = null;
+          }
+        }
+      }
     }
 
     return data;

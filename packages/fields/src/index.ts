@@ -15,7 +15,9 @@ export type {
   ValidationError,
   ValidationResult,
   FieldType,
-  ValidFieldType
+  ValidFieldType,
+  ConditionalConfig,
+  ConditionalOperator
 } from './domain/types';
 
 export { VALID_FIELD_TYPES } from './domain/types';
@@ -43,6 +45,7 @@ export { TabField } from './domain/fields/TabField';
 
 // Export domain services
 export { FieldRegistry } from './domain/FieldRegistry';
+export { ConditionalEvaluator } from './domain/ConditionalEvaluator';
 
 // Export application services
 export { FieldRenderer } from './application/FieldRenderer';

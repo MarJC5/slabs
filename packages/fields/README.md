@@ -17,6 +17,7 @@ pnpm add @slabs/fields
 ## Key Features
 
 - 21 built-in field types (text, image, repeater, flexible, etc.)
+- Conditional fields with 12 operators
 - Automatic UI generation from field configurations
 - Built-in validation with error messages
 - Data extraction from rendered fields
@@ -392,12 +393,13 @@ const container = renderFields(fields, data, {
 });
 ```
 
-#### `extractFieldData(element)`
+#### `extractFieldData(element, fields?)`
 
-Extract data from rendered fields.
+Extract data from rendered fields. Automatically handles conditional fields.
 
 **Parameters:**
 - `element: HTMLElement` - Container with rendered fields
+- `fields?: Record<string, FieldConfigData>` - Optional field configurations (auto-detected from `renderBlockEditor`)
 
 **Returns:** `Record<string, any>`
 
@@ -407,6 +409,9 @@ Extract data from rendered fields.
 const container = renderFields(fields);
 // User interacts with fields...
 const data = extractFieldData(container);
+
+// Conditional fields that are hidden will be set to null
+// { title: 'Hello', apiAccess: null, apiCallsLimit: null }
 ```
 
 #### `validateFields(fields, data)`
@@ -530,6 +535,11 @@ interface FieldConfigData {
   width?: string | number;   // Field width
   description?: string;      // Help text
   hint?: string;             // Inline hint
+  conditional?: {            // Show/hide based on another field
+    field: string;           // Field name to watch
+    operator: string;        // Comparison operator
+    value: any;              // Value to compare against
+  };
 }
 ```
 
@@ -658,28 +668,55 @@ const fields = {
 }
 ```
 
-### Conditional Logic
+### Conditional Fields
 
-Show/hide fields based on other field values:
+Show/hide fields dynamically based on other field values:
 
 ```typescript
 const fields = {
-  hasImage: {
-    type: 'boolean',
-    label: 'Include Image'
+  planType: {
+    type: 'select',
+    label: 'Plan Type',
+    options: [
+      { value: 'basic', label: 'Basic' },
+      { value: 'pro', label: 'Pro' },
+      { value: 'enterprise', label: 'Enterprise' }
+    ]
   },
-  image: {
-    type: 'image',
-    label: 'Image',
-    // Show only when hasImage is true
-    conditionalLogic: {
-      field: 'hasImage',
+  apiAccess: {
+    type: 'boolean',
+    label: 'API Access',
+    conditional: {
+      field: 'planType',
+      operator: 'in',
+      value: ['pro', 'enterprise']
+    }
+  },
+  apiCallsLimit: {
+    type: 'number',
+    label: 'API Calls Limit',
+    required: true,
+    conditional: {
+      field: 'apiAccess',
       operator: '==',
       value: true
     }
   }
 };
 ```
+
+**Supported operators:**
+- Comparison: `==`, `!=`, `>`, `<`, `>=`, `<=`
+- String: `contains`, `not_contains`
+- Array: `in`, `not_in`
+- Empty: `empty`, `not_empty`
+
+**Features:**
+- Automatic show/hide with smooth animations
+- Chained conditionals (multi-level dependencies)
+- Validation skips hidden fields automatically
+- Extraction sets hidden fields to `null`
+- Works with all field types
 
 ### Style Customization
 
