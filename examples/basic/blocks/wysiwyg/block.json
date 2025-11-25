@@ -1,6 +1,6 @@
 {
-  "name": "slabs/paragraph",
-  "title": "Paragraph",
+  "name": "slabs/wysiwyg",
+  "title": "Rich text",
   "description": "Basic text paragraph",
   "category": "text",
   "icon": "Text",

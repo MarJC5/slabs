@@ -156,6 +156,15 @@ export class SlabsRenderer {
   private extractRenderers(): Record<string, RenderFunction> {
     const renderers: Record<string, RenderFunction> = {};
 
+    // Add built-in renderer for native Editor.js paragraph
+    renderers['paragraph'] = (data: { text: string }) => {
+      const p = document.createElement('p');
+      p.classList.add("slabs-text");
+      p.innerHTML = data.text || '';
+      return p;
+    };
+
+    // Add Slabs block renderers
     for (const [name, block] of Object.entries(blocks)) {
       // Apply include/exclude filters
       if (!this.shouldIncludeBlock(name)) {

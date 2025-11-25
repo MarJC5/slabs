@@ -10,16 +10,6 @@ import { Slabs } from '@slabs/client';
 const slabs = new Slabs();
 const tools = slabs.getTools();
 
-console.log('📝 Admin Editor Loaded');
-console.log('Available tools:', Object.keys(tools));
-console.log('Has slabs/paragraph?', 'slabs/paragraph' in tools);
-
-// Check if slabs/paragraph is available
-if (!tools['slabs/paragraph']) {
-  console.error('❌ slabs/paragraph block not found! Please restart dev server.');
-  console.error('Available blocks:', Object.keys(tools));
-}
-
 // Load saved data from localStorage
 function loadSavedData() {
   const saved = localStorage.getItem('slabs-content');
@@ -40,8 +30,6 @@ const editor = new EditorJS({
 
   tools: {
     ...tools,
-    // Override Editor.js built-in paragraph with Slabs paragraph
-    paragraph: tools['slabs/paragraph']
   },
 
   data: loadSavedData() || {
@@ -51,9 +39,6 @@ const editor = new EditorJS({
   placeholder: 'Click + to add a block...',
 
   inlineToolbar: false,
-
-  // Set default block to Editor.js paragraph (which we override with slabs/paragraph)
-  defaultBlock: 'paragraph',
 
   onReady: () => {
     console.log('✅ Editor.js is ready!');
