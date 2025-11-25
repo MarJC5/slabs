@@ -4,6 +4,8 @@
 
 A modern, extensible block system for Editor.js with automatic block discovery, ACF-like field configuration, and separate editing/rendering bundles. Built with TypeScript, Vite, and designed for performance.
 
+> **Note:** Slabs is currently in beta and not yet published to npm. You can use it in your projects by cloning this repository and linking the packages as workspace dependencies using pnpm workspaces.
+
 ---
 
 ## Features
