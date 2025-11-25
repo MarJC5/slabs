@@ -16,6 +16,10 @@ import { PasswordField } from './fields/PasswordField';
 import { LinkField } from './fields/LinkField';
 import { RepeaterField } from './fields/RepeaterField';
 import { TabField } from './fields/TabField';
+import { OEmbedField } from './fields/OEmbedField';
+import { FileField } from './fields/FileField';
+import { FlexibleField } from './fields/FlexibleField';
+import { GroupField } from './fields/GroupField';
 
 /**
  * FieldRegistry - Repository for managing field types
@@ -93,6 +97,10 @@ export class FieldRegistry {
     registry.register('password', new PasswordField());
     registry.register('link', new LinkField());
     registry.register('repeater', new RepeaterField());
+    registry.register('flexible', new FlexibleField());
+    registry.register('group', new GroupField());
+    registry.register('oembed', new OEmbedField());
+    registry.register('file', new FileField());
 
     // Register TabField and initialize it with the registry (to avoid circular dependency)
     const tabField = new TabField();

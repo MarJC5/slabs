@@ -41,6 +41,7 @@ export class LinkField implements FieldType {
 
     // Create URL input
     const urlInput = document.createElement('input');
+    urlInput.classList.add('slabs-field__input');
     urlInput.setAttribute('type', 'url');
     urlInput.setAttribute('name', 'url');
     urlInput.setAttribute('placeholder', 'https://example.com');
@@ -51,6 +52,7 @@ export class LinkField implements FieldType {
 
     // Create title input
     const titleInput = document.createElement('input');
+    titleInput.classList.add('slabs-field__input');
     titleInput.setAttribute('type', 'text');
     titleInput.setAttribute('name', 'title');
     titleInput.setAttribute('placeholder', 'Link text');
@@ -61,6 +63,7 @@ export class LinkField implements FieldType {
 
     // Create target select
     const targetSelect = document.createElement('select');
+    targetSelect.classList.add('slabs-field__input');
     targetSelect.setAttribute('name', 'target');
 
     const selfOption = document.createElement('option');
@@ -77,14 +80,17 @@ export class LinkField implements FieldType {
 
     // Create labels and append to container
     const urlLabel = document.createElement('label');
+    urlLabel.classList.add('slabs-field__label');
     urlLabel.textContent = 'URL';
     urlLabel.appendChild(urlInput);
 
     const titleLabel = document.createElement('label');
+    titleLabel.classList.add('slabs-field__label');
     titleLabel.textContent = 'Title';
     titleLabel.appendChild(titleInput);
 
     const targetLabel = document.createElement('label');
+    targetLabel.classList.add('slabs-field__label');
     targetLabel.textContent = 'Target';
     targetLabel.appendChild(targetSelect);
 

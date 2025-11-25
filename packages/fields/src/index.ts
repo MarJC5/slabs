@@ -37,6 +37,8 @@ export { ColorField } from './domain/fields/ColorField';
 export { DateField } from './domain/fields/DateField';
 export { WysiwygField } from './domain/fields/WysiwygField';
 export { RepeaterField } from './domain/fields/RepeaterField';
+export { FlexibleField } from './domain/fields/FlexibleField';
+export { GroupField } from './domain/fields/GroupField';
 export { TabField } from './domain/fields/TabField';
 
 // Export domain services

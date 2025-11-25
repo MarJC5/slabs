@@ -24,7 +24,14 @@ export class FieldExtractor {
     // If no data-field-type, determine from element type
     if (!fieldType) {
       // Check for composite/complex field types first
-      if (input.classList.contains('slabs-field-link')) {
+      // Check if the input element itself is an OEmbed container
+      if (input.classList.contains('slabs-field-oembed')) {
+        fieldType = 'oembed';
+      }
+      else if (input.classList.contains('slabs-field-file')) {
+        fieldType = 'file';
+      }
+      else if (input.classList.contains('slabs-field-link')) {
         fieldType = 'link';
       }
       else if (input.classList.contains('image-field')) {
@@ -32,6 +39,12 @@ export class FieldExtractor {
       }
       else if (input.classList.contains('repeater-field')) {
         fieldType = 'repeater';
+      }
+      else if (input.classList.contains('flexible-field')) {
+        fieldType = 'flexible';
+      }
+      else if (input.classList.contains('group-field')) {
+        fieldType = 'group';
       }
       // Check for radio group (container with multiple radio inputs)
       else if (input.classList.contains('slabs-field__radio-group')) {
@@ -68,6 +81,12 @@ export class FieldExtractor {
     }
 
     const handler = this.registry.get(fieldType);
+
+    // For OEmbed and File fields, pass the container (input IS the container in this case)
+    if (fieldType === 'oembed' || fieldType === 'file') {
+      return handler.extract(input as HTMLElement);
+    }
+
     return handler.extract(input as HTMLElement);
   }
 

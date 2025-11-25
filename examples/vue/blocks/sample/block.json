@@ -82,6 +82,68 @@
             "website": {
               "type": "link",
               "label": "Website"
+            },
+            "address": {
+              "type": "group",
+              "label": "Mailing Address",
+              "hint": "Enter your complete mailing address",
+              "collapsible": true,
+              "fields": {
+                "street": {
+                  "type": "text",
+                  "label": "Street Address",
+                  "placeholder": "123 Main St"
+                },
+                "city": {
+                  "type": "text",
+                  "label": "City",
+                  "placeholder": "Springfield"
+                },
+                "state": {
+                  "type": "text",
+                  "label": "State/Province",
+                  "placeholder": "CA"
+                },
+                "zipCode": {
+                  "type": "text",
+                  "label": "ZIP/Postal Code",
+                  "placeholder": "12345"
+                },
+                "country": {
+                  "type": "select",
+                  "label": "Country",
+                  "options": [
+                    { "value": "us", "label": "United States" },
+                    { "value": "ca", "label": "Canada" },
+                    { "value": "uk", "label": "United Kingdom" },
+                    { "value": "au", "label": "Australia" }
+                  ],
+                  "default": "us"
+                }
+              }
+            },
+            "socialMedia": {
+              "type": "group",
+              "label": "Social Media Profiles",
+              "layout": "horizontal",
+              "collapsible": true,
+              "collapsed": true,
+              "fields": {
+                "twitter": {
+                  "type": "text",
+                  "label": "Twitter Handle",
+                  "placeholder": "@username"
+                },
+                "linkedin": {
+                  "type": "link",
+                  "label": "LinkedIn URL"
+                },
+                "github": {
+                  "type": "text",
+                  "label": "GitHub Username",
+                  "placeholder": "username"
+                }
+              }
             }
           }
         },
@@ -122,6 +184,17 @@
               "label": "Thumbnail",
               "accept": "image/*",
               "maxSize": 2097152
+            },
+            "videoEmbed": {
+              "type": "oembed",
+              "label": "Video Embed",
+              "placeholder": "https://www.youtube.com/watch?v=..."
+            },
+            "attachment": {
+              "type": "file",
+              "label": "Document Attachment",
+              "accept": ".pdf,.doc,.docx,.txt",
+              "maxSize": 5242880
             },
             "accentColor": {
               "type": "color",
@@ -179,6 +252,158 @@
                 "enabled": {
                   "type": "checkbox",
                   "label": "Enabled"
+                }
+              }
+            },
+            "contentBlocks": {
+              "type": "flexible",
+              "label": "Content Blocks",
+              "buttonLabel": "Add Content Block",
+              "hint": "Add different types of content blocks with varying layouts",
+              "max": 10,
+              "layouts": {
+                "textBlock": {
+                  "label": "Text Block",
+                  "fields": {
+                    "heading": {
+                      "type": "text",
+                      "label": "Heading",
+                      "required": true
+                    },
+                    "content": {
+                      "type": "wysiwyg",
+                      "label": "Content",
+                      "mode": "minimal"
+                    },
+                    "alignment": {
+                      "type": "select",
+                      "label": "Text Alignment",
+                      "options": [
+                        { "value": "left", "label": "Left" },
+                        { "value": "center", "label": "Center" },
+                        { "value": "right", "label": "Right" }
+                      ],
+                      "default": "left"
+                    }
+                  }
+                },
+                "image": {
+                  "label": "Image Block",
+                  "fields": {
+                    "image": {
+                      "type": "image",
+                      "label": "Image",
+                      "accept": "image/*",
+                      "required": true
+                    },
+                    "caption": {
+                      "type": "text",
+                      "label": "Caption"
+                    },
+                    "altText": {
+                      "type": "text",
+                      "label": "Alt Text"
+                    },
+                    "width": {
+                      "type": "select",
+                      "label": "Width",
+                      "options": [
+                        { "value": "full", "label": "Full Width" },
+                        { "value": "wide", "label": "Wide" },
+                        { "value": "medium", "label": "Medium" },
+                        { "value": "small", "label": "Small" }
+                      ],
+                      "default": "full"
+                    }
+                  }
+                },
+                "callToAction": {
+                  "label": "Call to Action",
+                  "fields": {
+                    "headline": {
+                      "type": "text",
+                      "label": "Headline",
+                      "required": true
+                    },
+                    "description": {
+                      "type": "textarea",
+                      "label": "Description",
+                      "rows": 3
+                    },
+                    "buttonText": {
+                      "type": "text",
+                      "label": "Button Text",
+                      "required": true
+                    },
+                    "buttonLink": {
+                      "type": "link",
+                      "label": "Button Link"
+                    },
+                    "backgroundColor": {
+                      "type": "color",
+                      "label": "Background Color",
+                      "default": "#f3f4f6"
+                    },
+                    "centered": {
+                      "type": "boolean",
+                      "label": "Center Content",
+                      "display": "switch",
+                      "default": true
+                    }
+                  }
+                },
+                "quote": {
+                  "label": "Quote Block",
+                  "fields": {
+                    "quote": {
+                      "type": "textarea",
+                      "label": "Quote",
+                      "required": true,
+                      "rows": 4
+                    },
+                    "author": {
+                      "type": "text",
+                      "label": "Author"
+                    },
+                    "authorTitle": {
+                      "type": "text",
+                      "label": "Author Title"
+                    },
+                    "style": {
+                      "type": "select",
+                      "label": "Quote Style",
+                      "options": [
+                        { "value": "default", "label": "Default" },
+                        { "value": "bordered", "label": "Bordered" },
+                        { "value": "highlighted", "label": "Highlighted" }
+                      ],
+                      "default": "default"
+                    }
+                  }
+                },
+                "videoEmbed": {
+                  "label": "Video Embed",
+                  "fields": {
+                    "title": {
+                      "type": "text",
+                      "label": "Video Title"
+                    },
+                    "videoUrl": {
+                      "type": "oembed",
+                      "label": "Video URL",
+                      "placeholder": "https://www.youtube.com/watch?v=..."
+                    },
+                    "description": {
+                      "type": "textarea",
+                      "label": "Description",
+                      "rows": 2
+                    },
+                    "autoplay": {
+                      "type": "boolean",
+                      "label": "Autoplay",
+                      "display": "checkbox"
+                    }
+                  }
                 }
               }
             }

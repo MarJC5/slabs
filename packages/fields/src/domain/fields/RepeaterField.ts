@@ -17,6 +17,9 @@ import { WysiwygField } from './WysiwygField';
 import { EmailField } from './EmailField';
 import { PasswordField } from './PasswordField';
 import { LinkField } from './LinkField';
+import { FileField } from './FileField';
+import { OEmbedField } from './OEmbedField';
+import { BooleanField } from './BooleanField';
 import * as CodexIcons from '@codexteam/icons';
 
 /**
@@ -56,6 +59,9 @@ export class RepeaterField implements FieldType {
       this.registry.register('email', new EmailField());
       this.registry.register('password', new PasswordField());
       this.registry.register('link', new LinkField());
+      this.registry.register('file', new FileField());
+      this.registry.register('oembed', new OEmbedField());
+      this.registry.register('boolean', new BooleanField());
       // Note: NOT registering repeater to avoid circular dependency
     }
     return this.registry;

@@ -34,9 +34,12 @@ export interface FieldConfigData {
   showValue?: boolean;  // range
   mode?: 'minimal' | 'full';  // wysiwyg
   display?: 'checkbox' | 'switch';  // boolean - display mode
-  buttonLabel?: string;  // repeater - custom "Add Row" button text
-  layout?: 'row' | 'block';  // repeater - compact vs full-width layout
-  fields?: Record<string, FieldConfigData>;  // repeater - nested field definitions
+  buttonLabel?: string;  // repeater, flexible - custom "Add Row" / "Add Block" button text
+  layout?: 'row' | 'block' | 'vertical' | 'horizontal';  // repeater - compact vs full-width layout; group - field arrangement
+  fields?: Record<string, FieldConfigData>;  // repeater, group - nested field definitions
+  layouts?: Record<string, FieldConfigData>;  // flexible - layout type definitions with their own fields
+  collapsible?: boolean;  // group - whether the group can be collapsed
+  collapsed?: boolean;  // group - initial collapsed state
 }
 
 /**
@@ -98,7 +101,11 @@ export const VALID_FIELD_TYPES = [
   'date',
   'wysiwyg',
   'repeater',
-  'tabs'
+  'flexible',
+  'group',
+  'tabs',
+  'oembed',
+  'file'
 ] as const;
 
 export type ValidFieldType = typeof VALID_FIELD_TYPES[number];

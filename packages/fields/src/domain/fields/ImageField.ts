@@ -37,6 +37,11 @@ export class ImageField implements FieldType {
       fileInput.required = true;
     }
 
+    // Hide file input if there's an image already uploaded
+    if (value) {
+      fileInput.classList.add('image-input--hidden');
+    }
+
     // Preview container
     const preview = document.createElement('div');
     preview.classList.add('image-preview');
@@ -71,6 +76,8 @@ export class ImageField implements FieldType {
           hiddenInput.value = result;
           img.src = result;
           preview.classList.remove('hidden');
+          // Hide file input after upload
+          fileInput.classList.add('image-input--hidden');
         };
         reader.readAsDataURL(file);
       }
@@ -82,6 +89,8 @@ export class ImageField implements FieldType {
       img.src = '';
       preview.classList.add('hidden');
       fileInput.value = '';
+      // Show file input again after removing image
+      fileInput.classList.remove('image-input--hidden');
     });
 
     preview.appendChild(img);
