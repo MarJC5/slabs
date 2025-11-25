@@ -1,0 +1,40 @@
+{
+  "name": "@slabs/helpers",
+  "version": "0.0.0",
+  "description": "ACF-like helper functions for working with Slabs field data",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "vitest": "^4.0.13"
+  },
+  "keywords": [
+    "helpers",
+    "data",
+    "acf",
+    "custom-fields",
+    "slabs"
+  ],
+  "author": "",
+  "license": "MIT"
+}

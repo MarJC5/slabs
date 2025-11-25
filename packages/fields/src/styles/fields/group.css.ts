@@ -13,7 +13,7 @@ export const GROUP_FIELD_CSS = `
   overflow: hidden;
 }
 
-.group-field:not(.group-field--collapsed) .group-field__content {
+.group-field--collapsible:not(.group-field--collapsed) .group-field__content {
   border-top: var(--field-input-border-width) solid var(--field-border-color-secondary);
 }
 
@@ -68,10 +68,14 @@ export const GROUP_FIELD_CSS = `
 /* Content area */
 .group-field__content {
   background: var(--field-bg-base);
-  padding: var(--field-space-xl);
+  padding: var(--field-space-md);
   max-height: 2000px;
   overflow: hidden;
   transition: max-height var(--field-transition-slow), padding var(--field-transition-slow);
+}
+
+.group-field--collapsible .group-field__content {
+  padding: var(--field-space-xl);
 }
 
 .group-field--collapsed .group-field__content {

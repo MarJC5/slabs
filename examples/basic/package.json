@@ -12,6 +12,7 @@
     "@editorjs/editorjs": "^2.28.2",
     "@slabs/client": "workspace:*",
     "@slabs/fields": "workspace:*",
+    "@slabs/helpers": "workspace:*",
     "@slabs/renderer": "workspace:*"
   },
   "devDependencies": {

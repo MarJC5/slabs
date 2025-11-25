@@ -25,6 +25,7 @@
     "build:vite": "pnpm -r --filter='./packages/vite-plugin' run build",
     "build:client": "pnpm -r --filter='./packages/client' run build",
     "build:fields": "pnpm -r --filter='./packages/fields' run build",
+    "build:helpers": "pnpm -r --filter='./packages/helpers' run build",
     "dev": "pnpm -r --parallel --filter='./packages/*' run dev",
     "test": "vitest",
     "test:ui": "vitest --ui",

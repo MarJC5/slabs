@@ -78,6 +78,7 @@ export class GroupField implements FieldType {
 
     // Create collapsible header (if collapsible option is set)
     if (config.collapsible) {
+      container.classList.add('group-field--collapsible');
       const header = document.createElement('div');
       header.classList.add('group-field__header');
 

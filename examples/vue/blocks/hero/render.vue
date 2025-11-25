@@ -41,19 +41,29 @@ const props = withDefaults(defineProps<HeroProps>(), {
 <script lang="ts">
 import { createApp } from 'vue';
 import type { RenderContext } from '@slabs/renderer';
+import { getField, getFieldOr } from '@slabs/helpers';
 import HeroComponent from './render.vue';
 
 /**
  * Vue-based render function for Hero block
- * Creates a container with .hero-block class, mounts the Vue component into it
+ * Demonstrates using @slabs/helpers for data access
  */
 export function render(data: any, context?: RenderContext): HTMLElement {
   // Create wrapper element with hero-block class for full-width styling
   const wrapper = document.createElement('div');
   wrapper.className = 'hero-block';
 
+  // Use helpers to safely extract field values
+  const props = {
+    headline: getField<string>(data, 'headline'),
+    subheadline: getField<string>(data, 'subheadline'),
+    ctaText: getField<string>(data, 'ctaText'),
+    ctaLink: getField<string>(data, 'ctaLink'),
+    backgroundStyle: getFieldOr(data, 'backgroundStyle', 'light')
+  };
+
   // Create Vue app and mount the Hero component
-  const app = createApp(HeroComponent, data);
+  const app = createApp(HeroComponent, props);
   app.mount(wrapper);
 
   return wrapper;
