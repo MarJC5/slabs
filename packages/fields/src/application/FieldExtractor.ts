@@ -96,12 +96,19 @@ export class FieldExtractor {
   extract(container: HTMLElement): Record<string, any> {
     const data: Record<string, any> = {};
 
-    // Find all field elements
+    // Find all field elements that are DIRECT children (not nested in repeater/group/flexible)
+    // We need to exclude fields that are inside repeater rows, group fields, or flexible layouts
     const fields = container.querySelectorAll('.slabs-field[data-field-name]');
 
     for (const field of Array.from(fields)) {
       const fieldName = field.getAttribute('data-field-name');
       if (!fieldName) continue;
+
+      // Skip fields that are nested inside repeater rows (they have data-row-id)
+      if (field.hasAttribute('data-row-id')) continue;
+
+      // Skip fields that are nested inside flexible layouts (they have data-layout-id)
+      if (field.hasAttribute('data-layout-id')) continue;
 
       const value = this.extractField(field as HTMLElement);
       data[fieldName] = value;

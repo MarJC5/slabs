@@ -1,0 +1,16 @@
+{
+  "name": "slabs/paragraph",
+  "title": "Paragraph",
+  "description": "Basic text paragraph",
+  "category": "text",
+  "icon": "Text",
+  "collapsible": false,
+  "fields": {
+    "text": {
+      "type": "wysiwyg",
+      "label": "Content",
+      "mode": "minimal",
+      "placeholder": "Start typing..."
+    }
+  }
+}

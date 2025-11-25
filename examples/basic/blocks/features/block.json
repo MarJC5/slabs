@@ -1,0 +1,41 @@
+{
+  "name": "slabs/features",
+  "title": "Features",
+  "description": "Display a list of product features",
+  "category": "content",
+  "icon": "ListBulleted",
+  "collapsible": true,
+  "fields": {
+    "title": {
+      "type": "text",
+      "label": "Section Title",
+      "placeholder": "Why choose us"
+    },
+    "items": {
+      "type": "repeater",
+      "label": "Features",
+      "min": 1,
+      "max": 6,
+      "fields": {
+        "title": {
+          "type": "text",
+          "label": "Feature Title",
+          "required": true,
+          "placeholder": "Fast Performance"
+        },
+        "description": {
+          "type": "textarea",
+          "label": "Description",
+          "placeholder": "Lightning fast load times",
+          "rows": 2
+        },
+        "icon": {
+          "type": "text",
+          "label": "Icon (emoji)",
+          "placeholder": "⚡",
+          "maxLength": 2
+        }
+      }
+    }
+  }
+}
