@@ -4,7 +4,7 @@
  */
 
 import { SlabsRenderer } from '@slabs/renderer';
-import { ViewButton, EditButton, ButtonGroup } from '@slabs/editor';
+import { EditButton, ButtonGroup } from '@slabs/editor';
 import '@slabs/editor/styles';
 
 console.log('📖 Public View Page Loaded');
@@ -83,11 +83,10 @@ console.log('  This page uses @slabs/renderer (~3KB)');
 console.log('  Admin page uses Editor.js + @slabs/client (~102KB)');
 console.log('  Savings: ~97% smaller bundle for public pages!');
 
-// Configure button group for top-left (vertical layout)
+// Configure button group for top-right (vertical layout)
 ButtonGroup.configure('top-right', { orientation: 'vertical' });
 
-// Add edit buttons
-
+// Add edit button (view mode only shows edit button)
 const editButton = new EditButton({
   onEditClick: () => {
     window.location.href = '/admin.html';
@@ -96,3 +95,7 @@ const editButton = new EditButton({
   ariaLabel: 'Edit'
 });
 editButton.render();
+
+// Mode: View
+// Show: Edit
+// (Save, Clear, View buttons are not created in view mode)

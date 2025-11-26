@@ -115,6 +115,20 @@ const viewButton = new ViewButton({
 });
 viewButton.render();
 
+const editButton = new EditButton({
+  onEditClick: () => {
+    // Already in edit mode
+  },
+  position: 'top-right',
+  ariaLabel: 'Edit'
+});
+editButton.render();
+
+// Mode: Edit
+// Show: Save, Clear, View
+// Hide: Edit
+editButton.hide();
+
 // Setup keyboard shortcuts
 const shortcuts = new ShortcutManager();
 shortcuts.registerDefaults(handleSave);

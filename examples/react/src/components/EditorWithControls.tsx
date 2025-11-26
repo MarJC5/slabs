@@ -126,8 +126,8 @@ export function EditorWithControls({
       };
 
       // Configure button groups
-      ButtonGroup.configure('top-left', { orientation: 'vertical' });
-      ButtonGroup.configure('top-right', { orientation: 'vertical' });
+      ButtonGroup.configure('top-left', { orientation: 'horizontal' });
+      ButtonGroup.configure('top-right', { orientation: 'horizontal' });
 
       // Create save button
       const saveButton = new SaveButton({
@@ -152,8 +152,13 @@ export function EditorWithControls({
       const viewButton = new ViewButton({
         onViewClick: () => {
           setMode('view');
-          viewButtonRef.current?.setActive(true);
-          editButtonRef.current?.setActive(false);
+          // Show: Edit | Hide: Save, Clear, View
+          saveButtonRef.current?.hide();
+          clearButtonRef.current?.hide();
+          viewButtonRef.current?.hide();
+          editButtonRef.current?.show();
+          editButtonRef.current?.setActive(true);
+          viewButtonRef.current?.setActive(false);
         },
         position: 'top-left',
         ariaLabel: 'View'
@@ -165,14 +170,19 @@ export function EditorWithControls({
       const editButton = new EditButton({
         onEditClick: () => {
           setMode('edit');
-          editButtonRef.current?.setActive(true);
+          // Show: Save, Clear, View | Hide: Edit
+          saveButtonRef.current?.show();
+          clearButtonRef.current?.show();
+          viewButtonRef.current?.show();
+          editButtonRef.current?.hide();
+          editButtonRef.current?.setActive(false);
           viewButtonRef.current?.setActive(false);
         },
         position: 'top-left',
         ariaLabel: 'Edit'
       });
       editButton.render();
-      editButton.setActive(true); // Start in edit mode
+      editButton.hide(); // Start in edit mode, so hide edit button
       editButtonRef.current = editButton;
 
       // Setup keyboard shortcuts

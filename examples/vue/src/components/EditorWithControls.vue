@@ -148,8 +148,13 @@ onMounted(async () => {
   viewButton = new ViewButton({
     onViewClick: () => {
       mode.value = 'view';
-      viewButton?.setActive(true);
-      editButton?.setActive(false);
+      // Show: Edit | Hide: Save, Clear, View
+      saveButton?.hide();
+      clearButton?.hide();
+      viewButton?.hide();
+      editButton?.show();
+      editButton?.setActive(true);
+      viewButton?.setActive(false);
     },
     position: 'top-left',
     ariaLabel: 'View'
@@ -160,14 +165,19 @@ onMounted(async () => {
   editButton = new EditButton({
     onEditClick: () => {
       mode.value = 'edit';
-      editButton?.setActive(true);
+      // Show: Save, Clear, View | Hide: Edit
+      saveButton?.show();
+      clearButton?.show();
+      viewButton?.show();
+      editButton?.hide();
+      editButton?.setActive(false);
       viewButton?.setActive(false);
     },
     position: 'top-left',
     ariaLabel: 'Edit'
   });
   editButton.render();
-  editButton.setActive(true); // Start in edit mode
+  editButton.hide(); // Start in edit mode, so hide edit button
 
   // Setup keyboard shortcuts
   shortcuts = new ShortcutManager();
