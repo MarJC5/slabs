@@ -11,6 +11,7 @@
   "dependencies": {
     "@editorjs/editorjs": "^2.28.2",
     "@slabs/client": "workspace:*",
+    "@slabs/editor": "workspace:*",
     "@slabs/fields": "workspace:*",
     "@slabs/helpers": "workspace:*",
     "@slabs/renderer": "workspace:*"

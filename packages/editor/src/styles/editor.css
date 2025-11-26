@@ -1,0 +1,307 @@
+/**
+ * @slabs/editor Styles
+ *
+ * Shadcn-inspired minimal design with HSL colors.
+ * Icon-only UI components with clean, modern aesthetics.
+ */
+
+/* CSS Variables */
+:root {
+  --slabs-radius: 0.5rem;
+  --slabs-background: 0 0% 100%;
+  --slabs-foreground: 222.2 84% 4.9%;
+  --slabs-primary: 222.2 47.4% 11.2%;
+  --slabs-primary-foreground: 210 40% 98%;
+  --slabs-secondary: 210 40% 96.1%;
+  --slabs-secondary-foreground: 222.2 47.4% 11.2%;
+  --slabs-muted: 210 40% 96.1%;
+  --slabs-muted-foreground: 215.4 16.3% 46.9%;
+  --slabs-border: 214.3 31.8% 91.4%;
+  --slabs-success: 142.1 76.2% 36.3%;
+  --slabs-success-foreground: 0 0% 100%;
+  --slabs-error: 0 84.2% 60.2%;
+  --slabs-error-foreground: 0 0% 100%;
+  --slabs-info: 221.2 83.2% 53.3%;
+  --slabs-info-foreground: 0 0% 100%;
+}
+
+.dark {
+  --slabs-background: 222.2 84% 4.9%;
+  --slabs-foreground: 210 40% 98%;
+  --slabs-primary: 210 40% 98%;
+  --slabs-primary-foreground: 222.2 47.4% 11.2%;
+  --slabs-secondary: 217.2 32.6% 17.5%;
+  --slabs-secondary-foreground: 210 40% 98%;
+  --slabs-muted: 217.2 32.6% 17.5%;
+  --slabs-muted-foreground: 215 20.2% 65.1%;
+  --slabs-border: 217.2 32.6% 17.5%;
+}
+
+/* Base Styles */
+.slabs-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--slabs-radius);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+.slabs-button:hover {
+  opacity: 0.9;
+}
+
+.slabs-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.slabs-button:focus-visible {
+  outline: 2px solid hsl(var(--slabs-primary));
+  outline-offset: 2px;
+}
+
+/* ButtonGroup - For grouping buttons at same position */
+.slabs-button-group {
+  position: fixed;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 4;
+}
+
+.slabs-button-group--top-left {
+  top: 1rem;
+  left: 1rem;
+}
+
+.slabs-button-group--top-right {
+  top: 1rem;
+  right: 1rem;
+}
+
+.slabs-button-group--bottom-left {
+  bottom: 1rem;
+  left: 1rem;
+}
+
+.slabs-button-group--bottom-right {
+  bottom: 1rem;
+  right: 1rem;
+}
+
+/* Remove fixed positioning from components inside ButtonGroup */
+.slabs-button-group .slabs-save-button,
+.slabs-button-group .slabs-view-toggle {
+  position: static;
+}
+
+/* SaveButton Component - EditorJS Tooltip Style */
+.slabs-save-button {
+  composes: slabs-button;
+  position: fixed;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 3px;
+  background: var(--color-background, #fff);
+  color: var(--color-text-primary, #1d202b);
+  border: 1px solid var(--color-border, #EFF0F1);
+  border-radius: 6px;
+  box-shadow: var(--field-shadow-sm, 0 1px 2px 0 oklch(0% 0 0 / 0.05));
+  z-index: 4;
+  box-sizing: border-box;
+}
+
+.slabs-save-button:hover:not(:disabled) {
+  background: var(--color-background, #fff);
+  border: var(--field-input-border-width) solid var(--field-color-gray-100);
+}
+
+.slabs-save-button svg {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.25rem;
+  border-radius: 4px;
+  border: var(--field-input-border-width) solid transparent;
+  background: transparent;
+  transition: background 0.15s ease;
+}
+
+.slabs-save-button:hover:not(:disabled) svg {
+  background: var(--color-background-hover, #f7f7f7);
+  border: var(--field-input-border-width) solid var(--field-color-gray-100);
+}
+
+/* Active state for click feedback */
+.slabs-save-button--active svg {
+  background: var(--color-background-item-focus, #F8F8F8);
+  border: var(--field-input-border-width) solid var(--field-color-gray-100);
+}
+
+.slabs-save-button--top-left {
+  top: 1rem;
+  left: 1rem;
+}
+
+.slabs-save-button--top-right {
+  top: 1rem;
+  right: 1rem;
+}
+
+.slabs-save-button--bottom-left {
+  bottom: 1rem;
+  left: 1rem;
+}
+
+.slabs-save-button--bottom-right {
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.slabs-save-button--loading {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.slabs-save-button--loading svg {
+  animation: slabs-spin 1s linear infinite;
+}
+
+@keyframes slabs-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ViewToggle Component - EditorJS Tooltip Style */
+.slabs-view-toggle {
+  position: fixed;
+  display: flex;
+  gap: 0.25rem;
+  background: var(--color-background, #fff);
+  border: 1px solid var(--color-border, #EFF0F1);
+  border-radius: 6px;
+  padding: 3px;
+  box-shadow: var(--field-shadow-sm, 0 1px 2px 0 oklch(0% 0 0 / 0.05));
+  z-index: 4;
+  height: 2.5rem;
+  box-sizing: border-box;
+}
+
+.slabs-view-toggle--top-left {
+  top: 1rem;
+  left: 1rem;
+}
+
+.slabs-view-toggle--top-right {
+  top: 1rem;
+  right: 1rem;
+}
+
+.slabs-view-toggle--bottom-left {
+  bottom: 1rem;
+  left: 1rem;
+}
+
+.slabs-view-toggle--bottom-right {
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.slabs-view-toggle__button {
+  composes: slabs-button;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  background: transparent;
+  color: var(--color-text-secondary, #1d202b);
+  border: none;
+  border-radius: 4px;
+}
+
+.slabs-view-toggle__button svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.slabs-view-toggle__button--active {
+  background: var(--color-background-item-focus, #F8F8F8);
+  color: var(--color-text-primary, #1d202b);
+  border: var(--field-input-border-width) solid var(--field-color-gray-100);
+}
+
+.slabs-view-toggle__button:hover:not(:disabled) {
+  background: var(--color-background-hover, #f7f7f7);
+  color: var(--color-text-primary, #1d202b);
+  border: var(--field-input-border-width) solid var(--field-color-gray-100);
+}
+
+.slabs-view-toggle__button--active:hover:not(:disabled) {
+  background: var(--color-background-item-focus, #F8F8F8);
+}
+
+/* StatusAlert Component - Minimal Shadcn style */
+.slabs-alert {
+  position: relative;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--slabs-radius);
+  border: 1px solid hsl(var(--slabs-border));
+  background: hsl(var(--slabs-background));
+  color: hsl(var(--slabs-foreground));
+  text-align: center;
+}
+
+.slabs-alert--fixed {
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  min-width: 300px;
+  max-width: 500px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  z-index: 100;
+  animation: slabs-slide-in 0.2s ease-out;
+}
+
+@keyframes slabs-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.slabs-alert--success {
+  background: hsl(143.8 84.2% 96.3%);
+  border-color: hsl(142.1 76.2% 36.3%);
+  color: hsl(140.6 93.7% 15.1%);
+}
+
+.slabs-alert--error {
+  background: hsl(0 84.2% 96.3%);
+  border-color: hsl(0 76.2% 36.3%);
+  color: hsl(0 93.7% 15.1%);
+}
+
+.slabs-alert--info {
+  background: hsl(221.2 83.2% 96.3%);
+  border-color: hsl(221.2 83.2% 53.3%);
+  color: hsl(221.2 83.2% 25%);
+}
+
+.slabs-alert__message {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+}

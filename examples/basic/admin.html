@@ -24,119 +24,6 @@
       flex-direction: column;
     }
 
-    .header {
-      background: white;
-      border-bottom: 1px solid hsl(0 0% 89.8%);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-
-    .header-content {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 1rem 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex: 1;
-    }
-
-    .header h1 {
-      font-size: 1.125rem;
-      font-weight: 600;
-      color: hsl(0 0% 3.9%);
-    }
-
-    .nav {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .nav-link {
-      padding: 0.375rem 0.75rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: hsl(0 0% 45.1%);
-      text-decoration: none;
-      border-radius: 0.375rem;
-      transition: all 0.2s;
-      border: 1px solid transparent;
-    }
-
-    .nav-link:hover {
-      color: hsl(0 0% 9%);
-      background: hsl(0 0% 96.1%);
-    }
-
-    .nav-link.active {
-      color: hsl(0 0% 9%);
-      background: hsl(0 0% 96.1%);
-      border-color: hsl(0 0% 89.8%);
-    }
-
-    .actions {
-      display: flex;
-      gap: 0.5rem;
-      margin-left: auto;
-    }
-
-    .btn {
-      padding: 0.375rem 0.875rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-      border: 1px solid;
-      border-radius: 0.375rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      background: white;
-      white-space: nowrap;
-    }
-
-    .btn-primary {
-      background: hsl(0 0% 9%);
-      color: hsl(0 0% 98%);
-      border-color: hsl(0 0% 9%);
-    }
-
-    .btn-primary:hover {
-      background: hsl(0 0% 20%);
-      border-color: hsl(0 0% 20%);
-    }
-
-    .btn-secondary {
-      background: white;
-      color: hsl(0 0% 9%);
-      border-color: hsl(0 0% 89.8%);
-    }
-
-    .btn-secondary:hover {
-      background: hsl(0 0% 96.1%);
-    }
-
-    .status {
-      max-width: 1000px;
-      margin: 1rem auto;
-      padding: 0.75rem 1rem;
-      background: hsl(143.8 84.2% 96.3%);
-      border: 1px solid hsl(142.1 76.2% 36.3%);
-      border-radius: 0.5rem;
-      color: hsl(140.6 93.7% 15.1%);
-      font-size: 0.875rem;
-      display: none;
-    }
-
-    .status.show {
-      display: block;
-    }
-
     .editor-container {
       flex: 1;
       width: 100%;
@@ -148,7 +35,7 @@
       max-width: 1000px;
       margin: 0 auto;
       background: white;
-      padding: 3rem 2.5rem;
+      padding: 1.25rem 2.5rem 3rem;
       min-height: 100%;
     }
 
@@ -167,26 +54,6 @@
     }
 
     @media (max-width: 768px) {
-      .header-content {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .header-left {
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-      }
-
-      .actions {
-        width: 100%;
-        margin-left: 0;
-      }
-
-      .btn {
-        flex: 1;
-      }
-
       .editor-wrapper {
         padding: 2rem 1.5rem;
       }
@@ -194,23 +61,6 @@
   </style>
 </head>
 <body>
-  <div class="header">
-    <div class="header-content">
-      <div class="header-left">
-        <nav class="nav">
-          <a href="/admin.html" class="nav-link active">Editor</a>
-          <a href="/index.html" class="nav-link">View</a>
-        </nav>
-      </div>
-      <div class="actions">
-        <button class="btn btn-primary" id="save-button">Save</button>
-        <button class="btn btn-secondary" id="clear-button">Clear</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="status" id="status"></div>
-
   <div class="editor-container">
     <div class="editor-wrapper">
       <div id="editorjs"></div>

@@ -1,0 +1,53 @@
+{
+  "name": "@slabs/editor",
+  "version": "0.0.0",
+  "description": "Complete editor UI component for CMS integration with Slabs",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles": "./dist/styles/editor.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "type-check": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@editorjs/editorjs": "^2.28.0"
+  },
+  "dependencies": {
+    "@slabs/client": "workspace:*",
+    "@codexteam/icons": "^0.3.3"
+  },
+  "devDependencies": {
+    "@editorjs/editorjs": "^2.28.2",
+    "@types/node": "^24.10.1",
+    "happy-dom": "^20.0.10",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "vitest": "^4.0.13"
+  },
+  "keywords": [
+    "editorjs",
+    "editor",
+    "cms",
+    "slabs",
+    "blocks",
+    "ui",
+    "component"
+  ],
+  "author": "",
+  "license": "MIT"
+}

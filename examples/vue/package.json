@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@slabs/client": "workspace:*",
+    "@slabs/editor": "workspace:*",
     "@slabs/fields": "workspace:*",
     "@slabs/helpers": "workspace:*",
     "@slabs/renderer": "workspace:*",

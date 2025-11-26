@@ -3,7 +3,7 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   test: {
     globals: true,
-    environment: 'node',
+    environment: 'happy-dom', // Changed from 'node' to support browser APIs like localStorage
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

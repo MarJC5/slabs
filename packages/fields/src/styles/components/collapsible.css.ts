@@ -5,12 +5,11 @@
 export const COLLAPSIBLE_CSS = `
 /* Collapsible Block */
 .slabs-block-collapsible {
-  border: var(--field-input-border-width) solid var(--field-border-color-secondary);
+  border: var(--field-input-border-width) solid var(--field-color-gray-100);
   border-radius: var(--field-input-radius);
   overflow: hidden;
-  background: var(--field-bg-base);
   margin-bottom: .4em;
-  //box-shadow: var(--field-shadow-focus);
+  box-shadow: var(--field-shadow-sm);
 }
 
 .slabs-block-collapsible__header {
@@ -18,19 +17,19 @@ export const COLLAPSIBLE_CSS = `
   justify-content: space-between;
   align-items: center;
   padding: var(--field-space-lg) var(--field-space-xl);
-  background: var(--field-bg-muted);
+  //background: var(--field-bg-muted);
   cursor: pointer;
   user-select: none;
   transition: background-color var(--field-transition-legacy-fast);
 }
 
-.slabs-block-collapsible__header:hover {
-  background: var(--field-bg-hover);
+.slabs-block-collapsible:hover .slabs-block-collapsible__header  {
+  background: var(--field-bg-muted);
 }
 
 .slabs-block-collapsible__title {
   margin: 0;
-  color: var(--field-color-muted);
+  color: var(--field-color-gray-900);
   font-size: var(--field-text-absolute);
   line-height: var(--field-text-absolute-line);
   font-weight: var(--field-font-medium);
@@ -62,7 +61,7 @@ export const COLLAPSIBLE_CSS = `
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--field-color-muted);
+  color: var(--field-color-gray-900);
   transition: transform var(--field-transition-legacy-base);
   font-size: 1.2rem;
 }
@@ -85,7 +84,7 @@ export const COLLAPSIBLE_CSS = `
 }
 
 .slabs-block-collapsible:not(.slabs-block-collapsible--collapsed) .slabs-block-collapsible__content {
-  border-top: var(--field-input-border-width) solid var(--field-border-color-secondary);
+  border-top: var(--field-input-border-width) solid var(--field-color-gray-100);
 }
 
 .slabs-block-collapsible--collapsed .slabs-block-collapsible__content {

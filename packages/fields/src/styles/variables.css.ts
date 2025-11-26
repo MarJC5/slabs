@@ -16,7 +16,7 @@ export const CSS_VARIABLES = `
   --editorjs-inline-selection: oklch(92% 0.03 232);  /* #d4ecff */
 
   /* Primary Colors */
-  --editorjs-bg-light: oklch(95.7% 0.004 253);       /* #eff2f5 - toolbar buttons */
+  --editorjs-bg-light: oklch(97.3% 0 0);       /* #F8F8F8 - toolbar buttons */
   --editorjs-gray-text: oklch(52% 0.015 262);        /* #707684 - placeholders, settings */
   --editorjs-color-dark: oklch(19.5% 0.015 262);     /* #1D202B - dark text */
   --editorjs-active-icon: oklch(64% 0.12 235);       /* #388AE5 - blue icons */
@@ -27,7 +27,7 @@ export const CSS_VARIABLES = `
   --editorjs-border: oklch(93.5% 0.002 253);         /* #E8E8EB */
 
   /* Shadows */
-  --editorjs-shadow: 0 3px 15px -3px oklch(16% 0.02 262 / 0.13); /* rgba(13,20,33,0.13) */
+  --editorjs-shadow: 0 3px 15px -3px var(--color-shadow, rgba(13, 20, 33, .1)); /* rgba(13,20,33,0.13) */
 
   /* ========================================
      @slabs/fields Color System (OKLCH)

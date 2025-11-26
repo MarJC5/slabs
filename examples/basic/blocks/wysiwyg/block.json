@@ -4,7 +4,6 @@
   "description": "Basic text paragraph",
   "category": "text",
   "icon": "Text",
-  "preview": "./preview.png",
   "collapsible": false,
   "fields": {
     "text": {

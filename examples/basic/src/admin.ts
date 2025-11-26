@@ -1,124 +1,100 @@
 /**
- * Admin Page - Editor.js Integration
- * Demonstrates editing content with Slabs blocks
+ * Admin Page - Editor.js Integration with @slabs/editor
+ * Icon-only UI with save button, view toggle, and notifications
  */
 
 import EditorJS from '@editorjs/editorjs';
 import { Slabs } from '@slabs/client';
+import {
+  SaveButton,
+  ViewToggle,
+  StatusAlert,
+  ButtonGroup,
+  ShortcutManager,
+  PersistenceManager,
+  NotificationManager,
+  NotificationQueue,
+  EditorState,
+  LocalStoragePersistence
+} from '@slabs/editor';
+import '@slabs/editor/styles';
 
 // Initialize Slabs to get Editor.js tools
 const slabs = new Slabs();
 const tools = slabs.getTools();
 
-// Load saved data from localStorage
-function loadSavedData() {
-  const saved = localStorage.getItem('slabs-content');
-  if (saved) {
-    try {
-      return JSON.parse(saved);
-    } catch (error) {
-      console.error('Error parsing saved data:', error);
-      return null;
-    }
-  }
-  return null;
-}
+// Create editor state and persistence manager
+const state = new EditorState();
+const persistence = new PersistenceManager(
+  new LocalStoragePersistence('slabs-content'),
+  state
+);
 
-// Initialize Editor.js with Slabs tools
+// Load data and initialize Editor.js
+const savedData = await persistence.load();
+
 const editor = new EditorJS({
   holder: 'editorjs',
-
-  tools: {
-    ...tools,
-  },
-
-  data: loadSavedData() || {
-    blocks: []
-  },
-
+  tools: { ...tools },
+  data: savedData || { blocks: [] },
   placeholder: 'Click + to add a block...',
-
   inlineToolbar: false,
 
   onReady: () => {
     console.log('✅ Editor.js is ready!');
   },
 
-  onChange: (api, event) => {
-    console.log('Content changed', event);
+  onChange: () => {
+    state.markDirty();
   }
 });
 
-// Save button handler
-const saveButton = document.getElementById('save-button');
-const statusDiv = document.getElementById('status');
+// Create notification system
+const notificationQueue = new NotificationQueue();
+const notificationManager = new NotificationManager(notificationQueue);
 
-saveButton?.addEventListener('click', async () => {
+const statusAlert = new StatusAlert();
+statusAlert.render(document.body);
+notificationManager.attachComponent(statusAlert);
+
+// Save handler function
+async function handleSave() {
+  saveButton.flash();
+
   try {
     const outputData = await editor.save();
+    await persistence.save(outputData);
 
-    // Save to localStorage
-    localStorage.setItem('slabs-content', JSON.stringify(outputData));
-
-    console.log('💾 Content saved:', outputData);
-
-    // Show success message
-    if (statusDiv) {
-      statusDiv.textContent = '✅ Content saved successfully! View it on the public page.';
-      statusDiv.className = 'status show';
-      statusDiv.style.background = '#d4edda';
-      statusDiv.style.borderColor = '#c3e6cb';
-      statusDiv.style.color = '#155724';
-
-      setTimeout(() => {
-        statusDiv.className = 'status';
-      }, 3000);
-    }
+    notificationManager.showSuccess('Saved successfully');
+    console.log('Content saved:', outputData);
   } catch (error) {
+    notificationManager.showError('Error saving content');
     console.error('Error saving content:', error);
-
-    if (statusDiv) {
-      statusDiv.textContent = '❌ Error saving content. Check console for details.';
-      statusDiv.className = 'status show';
-      statusDiv.style.background = '#f8d7da';
-      statusDiv.style.borderColor = '#f5c6cb';
-      statusDiv.style.color = '#721c24';
-    }
   }
+}
+
+// Create save button (icon-only)
+const saveButton = new SaveButton({
+  icon: 'check',
+  position: 'top-right',
+  onClick: handleSave,
+  ariaLabel: 'Save'
 });
+saveButton.render(document.body);
 
-// Clear button handler
-const clearButton = document.getElementById('clear-button');
-
-clearButton?.addEventListener('click', async () => {
-  if (confirm('Are you sure you want to clear all content?')) {
-    try {
-      await editor.clear();
-      localStorage.removeItem('slabs-content');
-
-      console.log('🗑️ Content cleared');
-
-      if (statusDiv) {
-        statusDiv.textContent = '🗑️ Content cleared!';
-        statusDiv.className = 'status show';
-        statusDiv.style.background = '#fff3cd';
-        statusDiv.style.borderColor = '#ffeaa7';
-        statusDiv.style.color = '#856404';
-
-        setTimeout(() => {
-          statusDiv.className = 'status';
-        }, 2000);
-      }
-    } catch (error) {
-      console.error('Error clearing content:', error);
-    }
-  }
+// Create view toggle (shows both view and edit buttons)
+const viewToggle = new ViewToggle({
+  viewUrl: '/index.html',
+  onEditClick: () => {
+    // Already in edit mode, do nothing
+  },
+  position: 'top-left'
 });
+viewToggle.render(document.body);
+// Highlight edit button since we're in edit mode
+viewToggle.setMode('edit');
 
-// Add keyboard shortcut for save (Cmd/Ctrl + S)
-document.addEventListener('keydown', async (e) => {
-  if ((e.metaKey || e.ctrlKey) && e.key === 's') {
-    e.preventDefault();
-    saveButton?.click();
-  }
-});
+// Setup keyboard shortcuts
+const shortcuts = new ShortcutManager();
+shortcuts.registerDefaults(handleSave);
+shortcuts.listen();
