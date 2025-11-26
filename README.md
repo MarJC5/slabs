@@ -29,6 +29,7 @@ A modern, extensible block system for Editor.js with automatic block discovery, 
 | `@slabs/client` | Browser (edit) | ~5KB | Editor.js integration for admin interfaces | [README](packages/client/README.md) |
 | `@slabs/renderer` | Browser (display) | ~3KB | Lightweight rendering for public pages | [README](packages/renderer/README.md) |
 | `@slabs/fields` | Browser (edit) | ~23KB | ACF-like field system with 21 field types | [README](packages/fields/README.md) |
+| `@slabs/editor` | Browser (edit) | ~7.5KB | Icon-only UI components for admin interfaces | [README](packages/editor/README.md) |
 | `@slabs/helpers` | Browser/Node | ~3KB | ACF-like helper functions for field data | [README](packages/helpers/README.md) |
 
 ---
@@ -38,9 +39,9 @@ A modern, extensible block system for Editor.js with automatic block discovery, 
 ### Installation
 
 ```bash
-npm install @slabs/vite-plugin @slabs/client @slabs/renderer @slabs/fields @editorjs/editorjs
+npm install @slabs/vite-plugin @slabs/client @slabs/renderer @slabs/fields @slabs/editor @slabs/helpers @editorjs/editorjs
 # or
-pnpm add @slabs/vite-plugin @slabs/client @slabs/renderer @slabs/fields @editorjs/editorjs
+pnpm add @slabs/vite-plugin @slabs/client @slabs/renderer @slabs/fields @slabs/editor @slabs/helpers @editorjs/editorjs
 ```
 
 ### Configure Vite
@@ -185,6 +186,73 @@ const renderer = new SlabsRenderer();
 const data = await fetch('/api/articles/123').then(r => r.json());
 const html = await renderer.render(data);
 document.getElementById('content').appendChild(html);
+```
+
+**Admin UI (Optional):**
+
+Add icon-only UI components to your admin interface:
+
+```typescript
+import {
+  SaveButton,
+  ViewToggle,
+  StatusAlert,
+  ShortcutManager,
+  PersistenceManager,
+  NotificationManager,
+  NotificationQueue,
+  EditorState,
+  LocalStoragePersistence
+} from '@slabs/editor';
+import '@slabs/editor/styles';
+
+// Create state and persistence
+const state = new EditorState();
+const persistence = new PersistenceManager(
+  new LocalStoragePersistence('content'),
+  state
+);
+
+// Create notification system
+const notificationQueue = new NotificationQueue();
+const notificationManager = new NotificationManager(notificationQueue);
+const statusAlert = new StatusAlert();
+statusAlert.render(document.body);
+notificationManager.attachComponent(statusAlert);
+
+// Save handler with flash feedback
+async function handleSave() {
+  saveButton.flash();
+  try {
+    const data = await editor.save();
+    await persistence.save(data);
+    notificationManager.showSuccess('Saved successfully');
+  } catch (error) {
+    notificationManager.showError('Error saving');
+  }
+}
+
+// Create UI components
+const saveButton = new SaveButton({
+  icon: 'check',
+  position: 'top-right',
+  onClick: handleSave,
+  ariaLabel: 'Save'
+});
+saveButton.render(document.body);
+
+const viewToggle = new ViewToggle({
+  viewUrl: '/preview',
+  onEditClick: () => {},
+  position: 'bottom-left'
+});
+viewToggle.render(document.body);
+viewToggle.setMode('edit');
+
+// Keyboard shortcuts (Cmd/Ctrl+S)
+const shortcuts = new ShortcutManager();
+shortcuts.registerDefaults(handleSave);
+shortcuts.listen();
 ```
 
 ---
@@ -655,6 +723,7 @@ export function render(context: { data: ContactFormData }) {
 - [Client Guide](packages/client/README.md) - Editor.js integration
 - [Renderer Guide](packages/renderer/README.md) - Display rendering
 - [Fields Guide](packages/fields/README.md) - Field system (21 types)
+- [Editor Guide](packages/editor/README.md) - Icon-only UI components for admin
 - [Helpers Guide](packages/helpers/README.md) - ACF-like helper functions
 
 ---
@@ -690,6 +759,7 @@ slabs/
 │   ├── client/         # Editor.js runtime
 │   ├── renderer/       # Display renderer
 │   ├── fields/         # Field system (21 types)
+│   ├── editor/         # Icon-only UI components
 │   └── helpers/        # Data manipulation helpers
 └── examples/
     ├── basic/          # Vanilla JS example
