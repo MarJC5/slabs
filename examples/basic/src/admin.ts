@@ -7,7 +7,9 @@ import EditorJS from '@editorjs/editorjs';
 import { Slabs } from '@slabs/client';
 import {
   SaveButton,
-  ViewToggle,
+  ClearButton,
+  ViewButton,
+  EditButton,
   StatusAlert,
   ButtonGroup,
   ShortcutManager,
@@ -57,6 +59,9 @@ const statusAlert = new StatusAlert();
 statusAlert.render(document.body);
 notificationManager.attachComponent(statusAlert);
 
+// Configure button group orientations
+ButtonGroup.configure('top-right', { orientation: 'vertical' });
+
 // Save handler function
 async function handleSave() {
   saveButton.flash();
@@ -73,28 +78,47 @@ async function handleSave() {
   }
 }
 
-// Create save button (icon-only)
+// Clear handler function
+function handleClear() {
+  try {
+    editor.clear();
+    state.markClean();
+    notificationManager.showSuccess('Content cleared');
+    console.log('Content cleared');
+  } catch (error) {
+    notificationManager.showError('Error clearing content');
+    console.error('Error clearing content:', error);
+  }
+}
+
+// Top-right group: Save + Clear (vertical stack)
 const saveButton = new SaveButton({
   icon: 'check',
   position: 'top-right',
   onClick: handleSave,
   ariaLabel: 'Save'
 });
-saveButton.render(document.body);
+saveButton.render();
 
-// Create view toggle (shows both view and edit buttons)
-const viewToggle = new ViewToggle({
-  viewUrl: '/index.html',
-  onEditClick: () => {
-    // Already in edit mode, do nothing
-  },
-  position: 'top-left'
+const clearButton = new ClearButton({
+  position: 'top-right',
+  onClick: handleClear,
+  ariaLabel: 'Clear all blocks'
 });
-viewToggle.render(document.body);
-// Highlight edit button since we're in edit mode
-viewToggle.setMode('edit');
+clearButton.render();
+
+// Top-left group: View + Edit (vertical stack)
+const viewButton = new ViewButton({
+  viewUrl: '/index.html',
+  position: 'top-right',
+  ariaLabel: 'View'
+});
+viewButton.render();
 
 // Setup keyboard shortcuts
 const shortcuts = new ShortcutManager();
 shortcuts.registerDefaults(handleSave);
+shortcuts.registerCustom({
+  'mod+shift+k': handleClear // Cmd/Ctrl+Shift+K to clear
+});
 shortcuts.listen();

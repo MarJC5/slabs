@@ -4,7 +4,7 @@
  */
 
 import { SlabsRenderer } from '@slabs/renderer';
-import { ViewToggle } from '@slabs/editor';
+import { ViewButton, EditButton, ButtonGroup } from '@slabs/editor';
 import '@slabs/editor/styles';
 
 console.log('📖 Public View Page Loaded');
@@ -83,13 +83,16 @@ console.log('  This page uses @slabs/renderer (~3KB)');
 console.log('  Admin page uses Editor.js + @slabs/client (~102KB)');
 console.log('  Savings: ~97% smaller bundle for public pages!');
 
-// Add view toggle button (only view button visible, as we're in view mode)
-const viewToggle = new ViewToggle({
-  viewUrl: '/index.html',
+// Configure button group for top-left (vertical layout)
+ButtonGroup.configure('top-right', { orientation: 'vertical' });
+
+// Add edit buttons
+
+const editButton = new EditButton({
   onEditClick: () => {
     window.location.href = '/admin.html';
   },
-  position: 'top-left'
+  position: 'top-right',
+  ariaLabel: 'Edit'
 });
-viewToggle.render(document.body);
-viewToggle.setMode('view');
+editButton.render();

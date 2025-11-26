@@ -91,6 +91,14 @@
   z-index: 4;
 }
 
+.slabs-button-group--horizontal {
+  flex-direction: row;
+}
+
+.slabs-button-group--vertical {
+  flex-direction: column;
+}
+
 .slabs-button-group--top-left {
   top: 1rem;
   left: 1rem;
@@ -112,14 +120,12 @@
 }
 
 /* Remove fixed positioning from components inside ButtonGroup */
-.slabs-button-group .slabs-save-button,
-.slabs-button-group .slabs-view-toggle {
+.slabs-button-group .slabs-icon-button {
   position: static;
 }
 
-/* SaveButton Component - EditorJS Tooltip Style */
-.slabs-save-button {
-  composes: slabs-button;
+/* Shared Icon Button Base Styles */
+.slabs-icon-button {
   position: fixed;
   width: 2.5rem;
   height: 2.5rem;
@@ -131,14 +137,16 @@
   box-shadow: var(--field-shadow-md);
   z-index: 4;
   box-sizing: border-box;
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
-.slabs-save-button:hover:not(:disabled) {
+.slabs-icon-button:hover:not(:disabled) {
   background: var(--color-background, var(--field-bg-base));
   border: var(--field-input-border-width) solid var(--field-color-gray-100);
 }
 
-.slabs-save-button svg {
+.slabs-icon-button svg {
   width: 2rem;
   height: 2rem;
   padding: 0.25rem;
@@ -148,20 +156,18 @@
   transition: background 0.15s ease;
 }
 
-.slabs-save-button:hover:not(:disabled) svg {
+.slabs-icon-button:hover:not(:disabled) svg {
   background: var(--color-background-hover, var(--field-bg-hover));
   border: var(--field-input-border-width) solid var(--field-color-gray-100);
 }
 
-/* Active state for click feedback */
-.slabs-save-button--active svg {
+.slabs-icon-button--active svg {
   background: var(--color-background-item-focus, var(--field-bg-hover));
   border: var(--field-input-border-width) solid var(--field-color-gray-100);
 }
 
-.slabs-save-button--top-left {
-  top: 1rem;
-  left: 1rem;
+.slabs-icon-button--hidden {
+  display: none !important;
 }
 
 .slabs-save-button--top-right {
@@ -195,73 +201,6 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-/* ViewToggle Component - EditorJS Tooltip Style */
-.slabs-view-toggle {
-  position: fixed;
-  display: flex;
-  gap: 0.25rem;
-  background: var(--color-background, var(--field-bg-base));
-  border: 1px solid var(--color-border, var(--field-color-gray-100));
-  border-radius: var(--field-radius-sm);
-  padding: 3px;
-  box-shadow: var(--field-shadow-md);
-  z-index: 4;
-  height: 2.5rem;
-  box-sizing: border-box;
-}
-
-.slabs-view-toggle--top-left {
-  top: 1rem;
-  left: 1rem;
-}
-
-.slabs-view-toggle--top-right {
-  top: 1rem;
-  right: 1rem;
-}
-
-.slabs-view-toggle--bottom-left {
-  bottom: 1rem;
-  left: 1rem;
-}
-
-.slabs-view-toggle--bottom-right {
-  bottom: 1rem;
-  right: 1rem;
-}
-
-.slabs-view-toggle__button {
-  composes: slabs-button;
-  width: 2rem;
-  height: 2rem;
-  padding: 0;
-  background: transparent;
-  color: var(--color-text-secondary, var(--field-color-gray-900));
-  border: none;
-  border-radius: 4px;
-}
-
-.slabs-view-toggle__button svg {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.slabs-view-toggle__button--active {
-  background: var(--color-background-item-focus, var(--field-bg-hover));
-  color: var(--color-text-primary, var(--field-color-gray-900));
-  border: var(--field-input-border-width) solid var(--field-color-gray-100);
-}
-
-.slabs-view-toggle__button:hover:not(:disabled) {
-  background: var(--color-background-hover, var(--field-bg-hover));
-  color: var(--color-text-primary, var(--field-color-gray-900));
-  border: var(--field-input-border-width) solid var(--field-color-gray-100);
-}
-
-.slabs-view-toggle__button--active:hover:not(:disabled) {
-  background: var(--color-background-item-focus, var(--field-bg-hover));
 }
 
 /* StatusAlert Component - Minimal Shadcn style */

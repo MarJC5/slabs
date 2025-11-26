@@ -18,8 +18,11 @@ import { Slabs } from '@slabs/client';
 import { SlabsRenderer } from '@slabs/renderer';
 import {
   SaveButton,
-  ViewToggle,
+  ClearButton,
+  ViewButton,
+  EditButton,
   StatusAlert,
+  ButtonGroup,
   ShortcutManager,
   PersistenceManager,
   NotificationManager,
@@ -44,7 +47,9 @@ const renderData = ref<any>(null);
 
 let editor: EditorJS | null = null;
 let saveButton: SaveButton | null = null;
-let viewToggle: ViewToggle | null = null;
+let clearButton: ClearButton | null = null;
+let viewButton: ViewButton | null = null;
+let editButton: EditButton | null = null;
 let statusAlert: StatusAlert | null = null;
 let shortcuts: ShortcutManager | null = null;
 let persistence: PersistenceManager | null = null;
@@ -105,6 +110,23 @@ onMounted(async () => {
     }
   };
 
+  // Clear handler
+  const handleClear = () => {
+    try {
+      if (!editor) return;
+      editor.clear();
+      renderData.value = { blocks: [] };
+      notificationManager.showSuccess('Content cleared');
+    } catch (error) {
+      notificationManager.showError('Error clearing content');
+      console.error('Error clearing content:', error);
+    }
+  };
+
+  // Configure button groups
+  ButtonGroup.configure('top-left', { orientation: 'vertical' });
+  ButtonGroup.configure('top-right', { orientation: 'vertical' });
+
   // Create save button
   saveButton = new SaveButton({
     icon: 'check',
@@ -112,26 +134,47 @@ onMounted(async () => {
     onClick: handleSave,
     ariaLabel: 'Save'
   });
-  saveButton.render(document.body);
+  saveButton.render();
 
-  // Create view toggle
-  viewToggle = new ViewToggle({
+  // Create clear button
+  clearButton = new ClearButton({
+    position: 'top-right',
+    onClick: handleClear,
+    ariaLabel: 'Clear all blocks'
+  });
+  clearButton.render();
+
+  // Create view button
+  viewButton = new ViewButton({
     onViewClick: () => {
       mode.value = 'view';
-      viewToggle?.setMode('view');
+      viewButton?.setActive(true);
+      editButton?.setActive(false);
     },
+    position: 'top-left',
+    ariaLabel: 'View'
+  });
+  viewButton.render();
+
+  // Create edit button
+  editButton = new EditButton({
     onEditClick: () => {
       mode.value = 'edit';
-      viewToggle?.setMode('edit');
+      editButton?.setActive(true);
+      viewButton?.setActive(false);
     },
-    position: 'top-left'
+    position: 'top-left',
+    ariaLabel: 'Edit'
   });
-  viewToggle.render(document.body);
-  viewToggle.setMode('edit');
+  editButton.render();
+  editButton.setActive(true); // Start in edit mode
 
   // Setup keyboard shortcuts
   shortcuts = new ShortcutManager();
   shortcuts.registerDefaults(handleSave);
+  shortcuts.registerCustom({
+    'mod+shift+k': handleClear
+  });
   shortcuts.listen();
 });
 
@@ -155,8 +198,14 @@ onBeforeUnmount(() => {
   if (saveButton) {
     saveButton.destroy();
   }
-  if (viewToggle) {
-    viewToggle.destroy();
+  if (clearButton) {
+    clearButton.destroy();
+  }
+  if (viewButton) {
+    viewButton.destroy();
+  }
+  if (editButton) {
+    editButton.destroy();
   }
   if (statusAlert) {
     statusAlert.hide();

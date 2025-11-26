@@ -17,8 +17,11 @@ export { ShortcutManager } from './application/ShortcutManager';
 export { NotificationManager } from './application/NotificationManager';
 
 // Infrastructure Layer
+export { IconButton } from './infrastructure/components/IconButton';
 export { SaveButton } from './infrastructure/components/SaveButton';
-export { ViewToggle } from './infrastructure/components/ViewToggle';
+export { ClearButton } from './infrastructure/components/ClearButton';
+export { ViewButton } from './infrastructure/components/ViewButton';
+export { EditButton } from './infrastructure/components/EditButton';
 export { StatusAlert } from './infrastructure/components/StatusAlert';
 export { ButtonGroup } from './infrastructure/ButtonGroup';
 export { renderIcon, ICONS, isBuiltInIcon } from './infrastructure/icons';
@@ -33,8 +36,11 @@ export type {
   ShortcutCallback
 } from './domain/types';
 
+export type { BaseIconButtonConfig, Position } from './infrastructure/components/IconButton';
 export type { SaveButtonConfig } from './infrastructure/components/SaveButton';
-export type { ViewToggleConfig } from './infrastructure/components/ViewToggle';
+export type { ClearButtonConfig } from './infrastructure/components/ClearButton';
+export type { ViewButtonConfig } from './infrastructure/components/ViewButton';
+export type { EditButtonConfig } from './infrastructure/components/EditButton';
 export type { StatusAlertConfig } from './infrastructure/components/StatusAlert';
 export type { IconName, IconInput } from './infrastructure/icons';
 

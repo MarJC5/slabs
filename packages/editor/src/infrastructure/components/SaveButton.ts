@@ -6,31 +6,17 @@
  */
 
 import { renderIcon, type IconInput } from '../icons';
+import { IconButton, type BaseIconButtonConfig } from './IconButton';
 
-export interface SaveButtonConfig {
+export interface SaveButtonConfig extends BaseIconButtonConfig {
   icon: IconInput; // 'check' | 'upload' | '<svg>...</svg>'
-  position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
   onClick: () => void;
-  ariaLabel?: string; // For accessibility only
 }
 
 /**
  * SaveButton UI component
  */
-export class SaveButton {
-  private element: HTMLButtonElement;
-
-  constructor(config: SaveButtonConfig) {
-    this.element = this.createButton(config);
-  }
-
-  /**
-   * Render the button to a container
-   */
-  render(container: HTMLElement): void {
-    container.appendChild(this.element);
-  }
-
+export class SaveButton extends IconButton<SaveButtonConfig> {
   /**
    * Set loading state (disables button, shows loading indicator)
    */
@@ -45,42 +31,16 @@ export class SaveButton {
   }
 
   /**
-   * Flash the button to show visual feedback (e.g., when keyboard shortcut is used)
-   */
-  flash(): void {
-    this.element.classList.add('slabs-save-button--active');
-
-    setTimeout(() => {
-      this.element.classList.remove('slabs-save-button--active');
-    }, 200);
-  }
-
-  /**
-   * Destroy the button (remove from DOM)
-   */
-  destroy(): void {
-    this.element.remove();
-  }
-
-  /**
    * Create the button element
    */
-  private createButton(config: SaveButtonConfig): HTMLButtonElement {
-    const button = document.createElement('button');
-    button.className = `slabs-save-button slabs-save-button--${config.position}`;
-    button.setAttribute('aria-label', config.ariaLabel || 'Save');
-    button.type = 'button';
+  protected createButton(config: SaveButtonConfig): HTMLButtonElement {
+    const iconHtml = renderIcon(config.icon);
 
-    // Render icon (built-in or custom SVG) directly on button element
-    const svgString = renderIcon(config.icon);
-    button.innerHTML = svgString;
-
-    button.addEventListener('click', () => {
-      if (!button.disabled) {
-        config.onClick();
-      }
-    });
-
-    return button;
+    return this.createBaseButton(
+      'slabs-save-button',
+      'Save',
+      iconHtml,
+      () => config.onClick()
+    );
   }
 }

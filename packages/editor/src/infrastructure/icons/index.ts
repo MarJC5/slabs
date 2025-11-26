@@ -5,7 +5,7 @@
  * Supports both built-in icons and custom SVG strings.
  */
 
-import { IconSave, IconCross, IconTableWithHeadings, IconMarker } from '@codexteam/icons';
+import { IconSave, IconCross, IconTableWithHeadings, IconMarker, IconTrash } from '@codexteam/icons';
 
 /**
  * Built-in icons from @codexteam/icons
@@ -14,7 +14,8 @@ export const ICONS = {
   check: IconSave,
   cross: IconCross,
   eye: IconTableWithHeadings,
-  pencil: IconMarker
+  pencil: IconMarker,
+  trash: IconTrash // Using loader/refresh icon as clear/reset
 } as const;
 
 export type IconName = keyof typeof ICONS;

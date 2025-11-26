@@ -10,8 +10,11 @@ import { Slabs } from '@slabs/client';
 import { SlabsRenderer } from '@slabs/renderer';
 import {
   SaveButton,
-  ViewToggle,
+  ClearButton,
+  ViewButton,
+  EditButton,
   StatusAlert,
+  ButtonGroup,
   ShortcutManager,
   PersistenceManager,
   NotificationManager,
@@ -37,7 +40,9 @@ export function EditorWithControls({
 
   // Refs for @slabs/editor components
   const saveButtonRef = useRef<SaveButton | null>(null);
-  const viewToggleRef = useRef<ViewToggle | null>(null);
+  const clearButtonRef = useRef<ClearButton | null>(null);
+  const viewButtonRef = useRef<ViewButton | null>(null);
+  const editButtonRef = useRef<EditButton | null>(null);
   const statusAlertRef = useRef<StatusAlert | null>(null);
   const shortcutsRef = useRef<ShortcutManager | null>(null);
   const persistenceRef = useRef<PersistenceManager | null>(null);
@@ -107,6 +112,23 @@ export function EditorWithControls({
         }
       };
 
+      // Clear handler
+      const handleClear = () => {
+        try {
+          editor.clear();
+          state.markClean();
+          setRenderData({ blocks: [] });
+          notificationManager.showSuccess('Content cleared');
+        } catch (error) {
+          notificationManager.showError('Error clearing content');
+          console.error('Error clearing content:', error);
+        }
+      };
+
+      // Configure button groups
+      ButtonGroup.configure('top-left', { orientation: 'vertical' });
+      ButtonGroup.configure('top-right', { orientation: 'vertical' });
+
       // Create save button
       const saveButton = new SaveButton({
         icon: 'check',
@@ -114,28 +136,51 @@ export function EditorWithControls({
         onClick: handleSave,
         ariaLabel: 'Save'
       });
-      saveButton.render(document.body);
+      saveButton.render();
       saveButtonRef.current = saveButton;
 
-      // Create view toggle
-      const viewToggle = new ViewToggle({
+      // Create clear button
+      const clearButton = new ClearButton({
+        position: 'top-right',
+        onClick: handleClear,
+        ariaLabel: 'Clear all blocks'
+      });
+      clearButton.render();
+      clearButtonRef.current = clearButton;
+
+      // Create view button
+      const viewButton = new ViewButton({
         onViewClick: () => {
           setMode('view');
-          viewToggleRef.current?.setMode('view');
+          viewButtonRef.current?.setActive(true);
+          editButtonRef.current?.setActive(false);
         },
+        position: 'top-left',
+        ariaLabel: 'View'
+      });
+      viewButton.render();
+      viewButtonRef.current = viewButton;
+
+      // Create edit button
+      const editButton = new EditButton({
         onEditClick: () => {
           setMode('edit');
-          viewToggleRef.current?.setMode('edit');
+          editButtonRef.current?.setActive(true);
+          viewButtonRef.current?.setActive(false);
         },
-        position: 'top-left'
+        position: 'top-left',
+        ariaLabel: 'Edit'
       });
-      viewToggle.render(document.body);
-      viewToggle.setMode('edit');
-      viewToggleRef.current = viewToggle;
+      editButton.render();
+      editButton.setActive(true); // Start in edit mode
+      editButtonRef.current = editButton;
 
       // Setup keyboard shortcuts
       const shortcuts = new ShortcutManager();
       shortcuts.registerDefaults(handleSave);
+      shortcuts.registerCustom({
+        'mod+shift+k': handleClear
+      });
       shortcuts.listen();
       shortcutsRef.current = shortcuts;
     }
@@ -150,8 +195,14 @@ export function EditorWithControls({
       if (saveButtonRef.current) {
         saveButtonRef.current.destroy();
       }
-      if (viewToggleRef.current) {
-        viewToggleRef.current.destroy();
+      if (clearButtonRef.current) {
+        clearButtonRef.current.destroy();
+      }
+      if (viewButtonRef.current) {
+        viewButtonRef.current.destroy();
+      }
+      if (editButtonRef.current) {
+        editButtonRef.current.destroy();
       }
       if (statusAlertRef.current) {
         statusAlertRef.current.hide();
