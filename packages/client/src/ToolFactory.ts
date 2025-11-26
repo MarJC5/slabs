@@ -83,10 +83,17 @@ export function createEditorJSTool(
       }
 
       // Default toolbox configuration
-      return {
+      const config: ToolboxConfig = {
         title: block.meta.title,
         icon: getIconSVG(block.meta.icon)
       };
+
+      // Add preview if available
+      if (block.preview) {
+        config.preview = block.preview;
+      }
+
+      return config;
     }
 
     /**

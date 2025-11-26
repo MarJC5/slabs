@@ -63,6 +63,11 @@ export interface ToolboxConfig {
    * Tool icon (HTML string or emoji)
    */
   icon: string;
+
+  /**
+   * Optional preview image URL for tooltip
+   */
+  preview?: string;
 }
 
 /**

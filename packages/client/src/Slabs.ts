@@ -6,6 +6,7 @@
 
 import { blocks, metadata } from 'virtual:slabs-registry';
 import { createEditorJSTool } from './ToolFactory';
+import { PreviewTooltip } from './PreviewTooltip';
 import type { SlabsOptions, EditorJSTool, BlockMetadata } from './types';
 
 /**
@@ -16,6 +17,7 @@ import type { SlabsOptions, EditorJSTool, BlockMetadata } from './types';
 export class Slabs {
   private tools: Record<string, EditorJSTool> = {};
   private options: SlabsOptions;
+  private previewTooltip: PreviewTooltip;
 
   /**
    * Create a new Slabs instance
@@ -23,6 +25,13 @@ export class Slabs {
   constructor(options: SlabsOptions = {}) {
     this.options = options;
     this.tools = this.createTools();
+    this.previewTooltip = new PreviewTooltip();
+
+    // Register preview images for blocks that have them
+    this.registerPreviews();
+
+    // Initialize preview tooltips
+    this.previewTooltip.init();
 
     // Log initialization in development
     if (import.meta.env.DEV) {
@@ -157,5 +166,16 @@ export class Slabs {
 
     // Include by default
     return true;
+  }
+
+  /**
+   * Register preview images for blocks that have them
+   */
+  private registerPreviews(): void {
+    for (const [name, block] of Object.entries(blocks)) {
+      if (block.preview && this.shouldIncludeBlock(name)) {
+        this.previewTooltip.registerPreview(name, block.preview);
+      }
+    }
   }
 }
