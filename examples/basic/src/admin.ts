@@ -60,7 +60,8 @@ statusAlert.render(document.body);
 notificationManager.attachComponent(statusAlert);
 
 // Configure button group orientations
-ButtonGroup.configure('top-right', { orientation: 'vertical' });
+ButtonGroup.configure('top-left', { orientation: 'horizontal' });
+ButtonGroup.configure('top-right', { orientation: 'horizontal' });
 
 // Save handler function
 async function handleSave() {
@@ -110,7 +111,7 @@ clearButton.render();
 // Top-left group: View + Edit (vertical stack)
 const viewButton = new ViewButton({
   viewUrl: '/index.html',
-  position: 'top-right',
+  position: 'top-left',
   ariaLabel: 'View'
 });
 viewButton.render();
@@ -119,7 +120,7 @@ const editButton = new EditButton({
   onEditClick: () => {
     // Already in edit mode
   },
-  position: 'top-right',
+  position: 'top-left',
   ariaLabel: 'Edit'
 });
 editButton.render();

@@ -84,14 +84,14 @@ console.log('  Admin page uses Editor.js + @slabs/client (~102KB)');
 console.log('  Savings: ~97% smaller bundle for public pages!');
 
 // Configure button group for top-right (vertical layout)
-ButtonGroup.configure('top-right', { orientation: 'vertical' });
+ButtonGroup.configure('top-left', { orientation: 'horizontal' });
 
 // Add edit button (view mode only shows edit button)
 const editButton = new EditButton({
   onEditClick: () => {
     window.location.href = '/admin.html';
   },
-  position: 'top-right',
+  position: 'top-left',
   ariaLabel: 'Edit'
 });
 editButton.render();
