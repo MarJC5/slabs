@@ -14,11 +14,22 @@ import type {
 import * as CodexIcons from '@codexteam/icons';
 
 /**
+ * Default block icon SVG
+ * Used when no icon is provided or icon is not found
+ */
+const DEFAULT_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <rect x="5" y="11" width="14" height="8" rx="1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="8.5" y="8" width="2" height="3" rx="0.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="13.5" y="8" width="2" height="3" rx="0.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+/**
  * Convert icon name to SVG element for Editor.js toolbox
  * Supports @codexteam/icons or emoji fallback
  */
 function getIconSVG(iconName?: string): string {
-  if (!iconName) return '📦';
+  // Return default icon if no icon name provided
+  if (!iconName) return DEFAULT_ICON;
 
   // If it's an emoji (single character or emoji), return as-is
   if (iconName.length <= 2 || /\p{Emoji}/u.test(iconName)) {
@@ -41,8 +52,8 @@ function getIconSVG(iconName?: string): string {
     return icon;
   }
 
-  // Fallback to emoji or default
-  return iconName;
+  // Fallback to default icon if not found
+  return DEFAULT_ICON;
 }
 
 /**
@@ -74,7 +85,7 @@ export function createEditorJSTool(
       // Default toolbox configuration
       return {
         title: block.meta.title,
-        icon: getIconSVG(block.meta.icon) || block.preview || '📦'
+        icon: getIconSVG(block.meta.icon)
       };
     }
 
