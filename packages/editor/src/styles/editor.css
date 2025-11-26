@@ -1,40 +1,58 @@
 /**
  * @slabs/editor Styles
  *
- * Shadcn-inspired minimal design with HSL colors.
- * Icon-only UI components with clean, modern aesthetics.
+ * Minimal design using OKLCH color space aligned with @slabs/fields
+ * Icon-only UI components harmonized with Editor.js aesthetics
  */
 
-/* CSS Variables */
+/* CSS Variables - OKLCH Color System */
 :root {
-  --slabs-radius: 0.5rem;
-  --slabs-background: 0 0% 100%;
-  --slabs-foreground: 222.2 84% 4.9%;
-  --slabs-primary: 222.2 47.4% 11.2%;
-  --slabs-primary-foreground: 210 40% 98%;
-  --slabs-secondary: 210 40% 96.1%;
-  --slabs-secondary-foreground: 222.2 47.4% 11.2%;
-  --slabs-muted: 210 40% 96.1%;
-  --slabs-muted-foreground: 215.4 16.3% 46.9%;
-  --slabs-border: 214.3 31.8% 91.4%;
-  --slabs-success: 142.1 76.2% 36.3%;
-  --slabs-success-foreground: 0 0% 100%;
-  --slabs-error: 0 84.2% 60.2%;
-  --slabs-error-foreground: 0 0% 100%;
-  --slabs-info: 221.2 83.2% 53.3%;
-  --slabs-info-foreground: 0 0% 100%;
-}
+  /* Editor.js Color Palette (OKLCH) */
+  --editorjs-bg-light: oklch(97.3% 0 0);               /* #F8F8F8 */
+  --editorjs-gray-text: oklch(52% 0.015 262);          /* #707684 */
+  --editorjs-color-dark: oklch(19.5% 0.015 262);       /* #1D202B */
+  --editorjs-line-gray: oklch(94.8% 0.002 253);        /* #EFF0F1 */
+  --editorjs-border: oklch(93.5% 0.002 253);           /* #E8E8EB */
+  --editorjs-shadow: 0 3px 15px -3px rgba(13, 20, 33, 0.1);
 
-.dark {
-  --slabs-background: 222.2 84% 4.9%;
-  --slabs-foreground: 210 40% 98%;
-  --slabs-primary: 210 40% 98%;
-  --slabs-primary-foreground: 222.2 47.4% 11.2%;
-  --slabs-secondary: 217.2 32.6% 17.5%;
-  --slabs-secondary-foreground: 210 40% 98%;
-  --slabs-muted: 217.2 32.6% 17.5%;
-  --slabs-muted-foreground: 215 20.2% 65.1%;
-  --slabs-border: 217.2 32.6% 17.5%;
+  /* Grayscale */
+  --field-color-white: oklch(100% 0 0);
+  --field-color-gray-100: var(--editorjs-line-gray);   /* #EFF0F1 */
+  --field-color-gray-200: oklch(93.5% 0.002 253);      /* #E8E8EB */
+  --field-color-gray-500: var(--editorjs-gray-text);   /* #707684 */
+  --field-color-gray-900: var(--editorjs-color-dark);  /* #1D202B */
+
+  /* Semantic Colors (OKLCH) */
+  --field-color-success: oklch(59% 0.15 145);          /* Green */
+  --field-color-success-bg: oklch(96% 0.05 145);       /* Light green bg */
+  --field-color-success-border: oklch(59% 0.15 145);   /* Green border */
+  --field-color-success-text: oklch(30% 0.12 145);     /* Dark green text */
+
+  --field-color-error: oklch(59% 0.18 25);             /* Red */
+  --field-color-error-bg: oklch(96% 0.05 25);          /* Light red bg */
+  --field-color-error-border: oklch(59% 0.18 25);      /* Red border */
+  --field-color-error-text: oklch(30% 0.15 25);        /* Dark red text */
+
+  --field-color-info: oklch(59% 0.15 235);             /* Blue */
+  --field-color-info-bg: oklch(96% 0.05 235);          /* Light blue bg */
+  --field-color-info-border: oklch(59% 0.15 235);      /* Blue border */
+  --field-color-info-text: oklch(30% 0.12 235);        /* Dark blue text */
+
+  /* Background Colors */
+  --field-bg-base: var(--field-color-white);
+  --field-bg-muted: var(--editorjs-bg-light);          /* #F8F8F8 */
+  --field-bg-hover: var(--editorjs-bg-light);          /* #F8F8F8 */
+
+  /* Shadows */
+  --field-shadow-sm: 0 1px 2px 0 oklch(0% 0 0 / 0.05);
+  --field-shadow-md: var(--editorjs-shadow);
+
+  /* Border */
+  --field-input-border-width: 1px;
+
+  /* Border Radius */
+  --field-radius-sm: 0.375rem;                         /* 6px */
+  --field-radius-md: 0.5rem;                           /* 8px */
 }
 
 /* Base Styles */
@@ -43,7 +61,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border-radius: var(--slabs-radius);
+  border-radius: var(--field-radius-sm);
   font-weight: 500;
   transition: all 0.2s ease;
   border: 1px solid transparent;
@@ -61,7 +79,7 @@
 }
 
 .slabs-button:focus-visible {
-  outline: 2px solid hsl(var(--slabs-primary));
+  outline: 2px solid var(--field-color-gray-900);
   outline-offset: 2px;
 }
 
@@ -106,17 +124,17 @@
   width: 2.5rem;
   height: 2.5rem;
   padding: 3px;
-  background: var(--color-background, #fff);
-  color: var(--color-text-primary, #1d202b);
-  border: 1px solid var(--color-border, #EFF0F1);
-  border-radius: 6px;
-  box-shadow: var(--field-shadow-sm, 0 1px 2px 0 oklch(0% 0 0 / 0.05));
+  background: var(--color-background, var(--field-bg-base));
+  color: var(--color-text-primary, var(--field-color-gray-900));
+  border: 1px solid var(--color-border, var(--field-color-gray-100));
+  border-radius: var(--field-radius-sm);
+  box-shadow: var(--field-shadow-md);
   z-index: 4;
   box-sizing: border-box;
 }
 
 .slabs-save-button:hover:not(:disabled) {
-  background: var(--color-background, #fff);
+  background: var(--color-background, var(--field-bg-base));
   border: var(--field-input-border-width) solid var(--field-color-gray-100);
 }
 
@@ -131,13 +149,13 @@
 }
 
 .slabs-save-button:hover:not(:disabled) svg {
-  background: var(--color-background-hover, #f7f7f7);
+  background: var(--color-background-hover, var(--field-bg-hover));
   border: var(--field-input-border-width) solid var(--field-color-gray-100);
 }
 
 /* Active state for click feedback */
 .slabs-save-button--active svg {
-  background: var(--color-background-item-focus, #F8F8F8);
+  background: var(--color-background-item-focus, var(--field-bg-hover));
   border: var(--field-input-border-width) solid var(--field-color-gray-100);
 }
 
@@ -184,11 +202,11 @@
   position: fixed;
   display: flex;
   gap: 0.25rem;
-  background: var(--color-background, #fff);
-  border: 1px solid var(--color-border, #EFF0F1);
-  border-radius: 6px;
+  background: var(--color-background, var(--field-bg-base));
+  border: 1px solid var(--color-border, var(--field-color-gray-100));
+  border-radius: var(--field-radius-sm);
   padding: 3px;
-  box-shadow: var(--field-shadow-sm, 0 1px 2px 0 oklch(0% 0 0 / 0.05));
+  box-shadow: var(--field-shadow-md);
   z-index: 4;
   height: 2.5rem;
   box-sizing: border-box;
@@ -220,7 +238,7 @@
   height: 2rem;
   padding: 0;
   background: transparent;
-  color: var(--color-text-secondary, #1d202b);
+  color: var(--color-text-secondary, var(--field-color-gray-900));
   border: none;
   border-radius: 4px;
 }
@@ -231,19 +249,19 @@
 }
 
 .slabs-view-toggle__button--active {
-  background: var(--color-background-item-focus, #F8F8F8);
-  color: var(--color-text-primary, #1d202b);
+  background: var(--color-background-item-focus, var(--field-bg-hover));
+  color: var(--color-text-primary, var(--field-color-gray-900));
   border: var(--field-input-border-width) solid var(--field-color-gray-100);
 }
 
 .slabs-view-toggle__button:hover:not(:disabled) {
-  background: var(--color-background-hover, #f7f7f7);
-  color: var(--color-text-primary, #1d202b);
+  background: var(--color-background-hover, var(--field-bg-hover));
+  color: var(--color-text-primary, var(--field-color-gray-900));
   border: var(--field-input-border-width) solid var(--field-color-gray-100);
 }
 
 .slabs-view-toggle__button--active:hover:not(:disabled) {
-  background: var(--color-background-item-focus, #F8F8F8);
+  background: var(--color-background-item-focus, var(--field-bg-hover));
 }
 
 /* StatusAlert Component - Minimal Shadcn style */
@@ -251,10 +269,10 @@
   position: relative;
   width: 100%;
   padding: 0.75rem 1rem;
-  border-radius: var(--slabs-radius);
-  border: 1px solid hsl(var(--slabs-border));
-  background: hsl(var(--slabs-background));
-  color: hsl(var(--slabs-foreground));
+  border-radius: var(--field-radius-md);
+  border: 1px solid var(--field-color-gray-200);
+  background: var(--field-bg-base);
+  color: var(--field-color-gray-900);
   text-align: center;
 }
 
@@ -266,7 +284,7 @@
   width: auto;
   min-width: 300px;
   max-width: 500px;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  box-shadow: 0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -1px oklch(0% 0 0 / 0.06);
   z-index: 100;
   animation: slabs-slide-in 0.2s ease-out;
 }
@@ -283,21 +301,21 @@
 }
 
 .slabs-alert--success {
-  background: hsl(143.8 84.2% 96.3%);
-  border-color: hsl(142.1 76.2% 36.3%);
-  color: hsl(140.6 93.7% 15.1%);
+  background: var(--field-color-success-bg);
+  border-color: var(--field-color-success-border);
+  color: var(--field-color-success-text);
 }
 
 .slabs-alert--error {
-  background: hsl(0 84.2% 96.3%);
-  border-color: hsl(0 76.2% 36.3%);
-  color: hsl(0 93.7% 15.1%);
+  background: var(--field-color-error-bg);
+  border-color: var(--field-color-error-border);
+  color: var(--field-color-error-text);
 }
 
 .slabs-alert--info {
-  background: hsl(221.2 83.2% 96.3%);
-  border-color: hsl(221.2 83.2% 53.3%);
-  color: hsl(221.2 83.2% 25%);
+  background: var(--field-color-info-bg);
+  border-color: var(--field-color-info-border);
+  color: var(--field-color-info-text);
 }
 
 .slabs-alert__message {
