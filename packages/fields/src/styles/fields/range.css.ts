@@ -106,6 +106,10 @@ input[type="range"].slabs-field__input:focus-visible::-moz-range-thumb {
   outline-offset: 2px;
 }
 
+input[type="range"].slabs-field__input:focus {
+  border-color: transparent;
+}
+
 /* Range Value Display */
 .slabs-field__range-value {
   font-size: var(--field-text-label);

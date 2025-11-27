@@ -19,7 +19,7 @@ export const REPEATER_FIELD_CSS = `
 
 .repeater-row {
   position: relative;
-  background: var(--field-bg-base);
+  background: var(--field-bg-muted);
   border: var(--field-input-border-width) solid var(--field-border-color-secondary);
   border-radius: var(--field-radius-md);
   overflow: hidden;
@@ -42,7 +42,7 @@ export const REPEATER_FIELD_CSS = `
 }
 
 .repeater-row__header:hover {
-  background: var(--field-bg-hover);
+  background: var(--field-bg-muted);
 }
 
 .repeater-row__title {
@@ -144,7 +144,7 @@ export const REPEATER_FIELD_CSS = `
 .repeater-add:hover:not(:disabled),
 .repeater-row__move-up:hover:not(:disabled),
 .repeater-row__move-down:hover:not(:disabled) {
-  background: var(--field-bg-hover);
+  background: var(--field-bg-muted);
 }
 
 /* Move buttons are icon-only, smaller */

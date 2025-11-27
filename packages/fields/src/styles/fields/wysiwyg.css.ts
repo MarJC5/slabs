@@ -39,11 +39,11 @@ export const WYSIWYG_FIELD_CSS = `
 }
 
 .slabs-wysiwyg__tool:hover {
-  background: var(--field-color-gray-100);
+  background: var(--field-bg-muted);
 }
 
 .slabs-wysiwyg__tool:active {
-  background: var(--field-color-gray-200);
+  background: var(--field-bg-muted);
 }
 
 .slabs-wysiwyg__editor {
