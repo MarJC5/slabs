@@ -1,6 +1,6 @@
 {
   "name": "@slabs/fields",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "ACF-like field system for Slabs blocks",
   "type": "module",
   "main": "./dist/index.js",
@@ -36,7 +36,11 @@
     "custom-fields",
     "slabs"
   ],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MarJC5/slabs.git"
+  },
+  "author": "Martin Jean-Christio <dev@misits.ch>",
   "license": "MIT",
   "dependencies": {
     "@codexteam/icons": "^0.3.3"

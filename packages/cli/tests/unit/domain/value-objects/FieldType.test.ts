@@ -48,9 +48,14 @@ describe('FieldType', () => {
       expect(fieldType.value).toBe('repeater');
     });
 
+    it('should accept "group" field type', () => {
+      const fieldType = new FieldType('group');
+      expect(fieldType.value).toBe('group');
+    });
+
     it('should throw error for invalid field type', () => {
       expect(() => new FieldType('invalid')).toThrow(
-        'Invalid field type: invalid. Must be one of: text, wysiwyg, select, checkbox, number, color, image, repeater'
+        'Invalid field type: invalid. Must be one of: text, wysiwyg, select, checkbox, number, color, image, repeater, group'
       );
     });
 
@@ -82,7 +87,8 @@ describe('FieldType', () => {
         'number',
         'color',
         'image',
-        'repeater'
+        'repeater',
+        'group'
       ]);
     });
 
@@ -126,6 +132,10 @@ describe('FieldType', () => {
 
     it('should validate repeater field type', () => {
       expect(FieldType.isValid('repeater')).toBe(true);
+    });
+
+    it('should validate group field type', () => {
+      expect(FieldType.isValid('group')).toBe(true);
     });
 
     it('should reject invalid field type', () => {

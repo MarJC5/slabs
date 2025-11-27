@@ -1,6 +1,6 @@
 {
   "name": "@slabs/vite-plugin",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Vite plugin for Slabs - scans and registers Editor.js blocks",
   "keywords": [
     "vite",
@@ -37,7 +37,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "chokidar": "^4.0.3",
+    "chokidar": "^5.0.0",
     "fast-glob": "^3.3.2",
     "zod": "^4.1.13"
   },

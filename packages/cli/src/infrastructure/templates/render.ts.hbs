@@ -1,0 +1,25 @@
+/**
+ * Render function for {{title}} block.
+ * Renders the block on the public frontend.
+ *
+ * @param data - Block data from save()
+ * @returns HTMLElement containing the rendered block
+ */
+export function render(data: any): HTMLElement {
+  const container = document.createElement('div');
+  container.className = '{{blockName}}';
+
+  // TODO: Customize the HTML structure for your block
+  // Example:
+{{#each fields}}  // {{label}}: data.{{name}}
+{{/each}}
+  // Add your rendering logic here
+  container.innerHTML = `
+    <div class="{{blockName}}__content">
+      <!-- Replace with your custom HTML -->
+      <pre>${JSON.stringify(data, null, 2)}</pre>
+    </div>
+  `;
+
+  return container;
+}

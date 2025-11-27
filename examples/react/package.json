@@ -19,6 +19,7 @@
     "editorjs": "npm:@editorjs/editorjs@^2.30.7"
   },
   "devDependencies": {
+    "@slabs/cli": "workspace:*",
     "@slabs/vite-plugin": "workspace:*",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",

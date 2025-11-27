@@ -1,0 +1,17 @@
+import { extractFieldData } from '@slabs/fields';
+
+/**
+ * Save function for {{title}} block.
+ * Extracts field data from the block editor.
+ *
+ * @param element - Block root element
+ * @returns Extracted block data
+ */
+export function save(element: HTMLElement): any {
+  const fieldsContainer = element.querySelector('.slabs-fields');
+  if (!fieldsContainer) {
+    return {};
+  }
+
+  return extractFieldData(fieldsContainer as HTMLElement);
+}

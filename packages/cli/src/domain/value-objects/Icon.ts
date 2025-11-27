@@ -1,7 +1,11 @@
 /**
  * Icon Value Object
  *
- * Represents a valid icon (emoji or single character) for blocks.
+ * Represents a valid icon for blocks.
+ * Supports two formats:
+ * 1. Single character/emoji (e.g., '🎯', 'A')
+ * 2. CodexIcon name (e.g., 'Picture', 'Bold', 'Settings')
+ *
  * Enforces domain rules for icons.
  */
 export class Icon {
@@ -19,13 +23,22 @@ export class Icon {
   /**
    * Validates the icon according to domain rules:
    * - Not empty
-   * - Single character or emoji (including those with variation selectors)
+   * - Either a single character/emoji OR a CodexIcon name (PascalCase string)
    */
   private validate(value: string): void {
     if (!value || value.trim().length === 0) {
       throw new Error('Icon cannot be empty');
     }
 
+    // Check if it's a CodexIcon name (PascalCase: starts with uppercase, contains only letters)
+    const isPascalCase = /^[A-Z][a-zA-Z]*$/.test(value);
+
+    if (isPascalCase) {
+      // Valid CodexIcon name - no further validation needed
+      return;
+    }
+
+    // Otherwise, validate as single character/emoji
     // Use Intl.Segmenter for proper grapheme cluster counting (handles complex emojis)
     // If not available, fall back to simple length check with generous limits
     if (typeof Intl !== 'undefined' && (Intl as any).Segmenter) {
@@ -33,12 +46,12 @@ export class Icon {
       const graphemes = Array.from(segmenter.segment(value));
 
       if (graphemes.length > 1) {
-        throw new Error('Icon must be a single character or emoji');
+        throw new Error('Icon must be a single character/emoji or a CodexIcon name (e.g., Picture, Bold)');
       }
     } else {
       // Fallback: allow up to 7 code units to accommodate complex emojis with modifiers
       if (value.length > 7) {
-        throw new Error('Icon must be a single character or emoji');
+        throw new Error('Icon must be a single character/emoji or a CodexIcon name (e.g., Picture, Bold)');
       }
     }
   }
@@ -49,6 +62,13 @@ export class Icon {
   isEmoji(): boolean {
     // Check if any character code is outside ASCII range (0-127)
     return [...this._value].some(char => char.charCodeAt(0) > 127);
+  }
+
+  /**
+   * Check if the icon is a CodexIcon name (PascalCase string)
+   */
+  isCodexIcon(): boolean {
+    return /^[A-Z][a-zA-Z]*$/.test(this._value);
   }
 
   /**
@@ -66,29 +86,29 @@ export class Icon {
   }
 
   /**
-   * Default icons for each category
+   * Default CodexIcon names for each category
    */
   static defaultContentIcon(): string {
-    return '📝';
+    return 'FileText';
   }
 
   static defaultMediaIcon(): string {
-    return '🎨';
+    return 'Picture';
   }
 
   static defaultDesignIcon(): string {
-    return '🎯';
+    return 'Palette';
   }
 
   static defaultWidgetsIcon(): string {
-    return '🔧';
+    return 'Settings';
   }
 
   static defaultThemeIcon(): string {
-    return '🌟';
+    return 'Brush';
   }
 
   static defaultEmbedIcon(): string {
-    return '📦';
+    return 'Code';
   }
 }

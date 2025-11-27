@@ -1,0 +1,18 @@
+{
+  "name": "{{namespace}}/{{blockName}}",
+  "title": "{{title}}",
+  "description": "{{description}}",
+  "category": "{{category}}",
+  "icon": "{{icon}}",
+  "collapsible": {{collapsible}}{{#if hasFields}},
+  "fields": {
+{{#each fields}}    "{{name}}": {
+      "type": "{{type}}",
+      "label": "{{label}}"{{#if required}},
+      "required": {{required}}{{/if}}{{#if placeholder}},
+      "placeholder": "{{placeholder}}"{{/if}}{{#if defaultValue}},
+      "default": {{json defaultValue}}{{/if}}{{#if options}}{{#each options}},
+      "{{@key}}": {{json this}}{{/each}}{{/if}}
+    }{{#unless @last}},{{/unless}}
+{{/each}}  }{{/if}}
+}

@@ -18,6 +18,7 @@
     "editorjs": "npm:@editorjs/editorjs@^2.30.7"
   },
   "devDependencies": {
+    "@slabs/cli": "workspace:*",
     "@slabs/vite-plugin": "workspace:*",
     "@vitejs/plugin-vue": "^6.0.2",
     "typescript": "^5.7.2",

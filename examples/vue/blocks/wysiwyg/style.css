@@ -1,0 +1,25 @@
+.paragraph-block {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: hsl(0 0% 3.9%);
+}
+
+.paragraph-block p {
+  margin: 0;
+}
+
+.paragraph-block strong {
+  font-weight: 600;
+  color: hsl(0 0% 9%);
+}
+
+.paragraph-block em {
+  font-style: italic;
+}
+
+.paragraph-block a {
+  color: hsl(0 0% 9%);
+  text-decoration: underline;
+}

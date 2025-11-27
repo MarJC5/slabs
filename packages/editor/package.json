@@ -1,6 +1,6 @@
 {
   "name": "@slabs/editor",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Complete editor UI component for CMS integration with Slabs",
   "type": "module",
   "main": "./dist/index.js",
@@ -48,6 +48,10 @@
     "ui",
     "component"
   ],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MarJC5/slabs.git"
+  },
+  "author": "Martin Jean-Christio <dev@misits.ch>",
   "license": "MIT"
 }

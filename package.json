@@ -27,6 +27,7 @@
     "build:fields": "pnpm -r --filter='./packages/fields' run build",
     "build:helpers": "pnpm -r --filter='./packages/helpers' run build",
     "build:editor": "pnpm -r --filter='./packages/editor' run build",
+    "build:cli": "pnpm -r --filter='./packages/cli' run build",
     "dev": "pnpm -r --parallel --filter='./packages/*' run dev",
     "test": "vitest",
     "test:ui": "vitest --ui",

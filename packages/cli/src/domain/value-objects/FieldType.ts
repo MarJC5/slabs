@@ -13,7 +13,8 @@ export class FieldType {
     'number',
     'color',
     'image',
-    'repeater'
+    'repeater',
+    'group'
   ] as const;
 
   private static readonly TYPES_REQUIRING_OPTIONS = ['select'] as const;

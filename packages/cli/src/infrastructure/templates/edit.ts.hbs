@@ -1,0 +1,19 @@
+import { renderBlockEditor } from '@slabs/fields';
+import type { EditContext } from 'virtual:slabs-registry';
+
+/**
+ * Edit function for {{title}} block.
+ * Renders the block editor UI using @slabs/fields.
+ *
+ * @param context - Editor.js block context
+ * @returns HTMLElement containing the block editor
+ */
+export function render(context: EditContext): HTMLElement {
+  return renderBlockEditor({
+    title: context.config?.title || '{{title}}',
+    icon: context.config?.icon,
+    fields: context.config?.fields || {},
+    data: context.data,
+    collapsible: context.config?.collapsible
+  });
+}

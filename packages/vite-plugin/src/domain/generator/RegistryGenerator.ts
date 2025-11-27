@@ -12,6 +12,7 @@ export class RegistryGenerator {
    */
   generateModule(blocks: BlockDefinition[]): string {
     const imports = this.generateImports(blocks);
+    const helpers = this.generateHelpers(blocks);
     const exports = this.generateExports(blocks);
     const metadata = this.generateMetadata(blocks);
 
@@ -19,6 +20,8 @@ export class RegistryGenerator {
 // DO NOT EDIT - This file is generated at build time
 
 ${imports}
+
+${helpers}
 
 ${exports}
 
@@ -45,10 +48,24 @@ ${metadata}
         `import { save as ${varName}Save } from '${this.getRelativePath(block.files.savePath)}';`
       );
 
-      // Import render function
-      imports.push(
-        `import { render as ${varName}Render } from '${this.getRelativePath(block.files.renderPath)}';`
-      );
+      // Import render function or component
+      const renderPath = block.files.renderPath;
+      if (renderPath.endsWith('.vue')) {
+        // Vue SFC - import default export
+        imports.push(
+          `import ${varName}RenderComponent from '${this.getRelativePath(renderPath)}';`
+        );
+      } else if (renderPath.endsWith('.tsx') || renderPath.endsWith('.jsx')) {
+        // React component - check if it exports a render function or default component
+        imports.push(
+          `import * as ${varName}RenderModule from '${this.getRelativePath(renderPath)}';`
+        );
+      } else {
+        // Standard TS/JS file - import named render export
+        imports.push(
+          `import { render as ${varName}Render } from '${this.getRelativePath(renderPath)}';`
+        );
+      }
 
       // Import preview image (optional)
       if (block.files.previewPath) {
@@ -71,6 +88,47 @@ ${metadata}
   }
 
   /**
+   * Generate helper functions for component wrapping
+   */
+  generateHelpers(blocks: BlockDefinition[]): string {
+    const hasVue = blocks.some(b => b.files.renderPath.endsWith('.vue'));
+    const hasReact = blocks.some(b =>
+      b.files.renderPath.endsWith('.tsx') || b.files.renderPath.endsWith('.jsx')
+    );
+
+    const helpers: string[] = ['// === HELPERS ==='];
+
+    if (hasVue) {
+      helpers.push(`
+// Helper to wrap Vue SFCs
+import { createApp as __createVueApp, h as __h } from 'vue';
+function __wrapVueComponent(component, data, context) {
+  const container = document.createElement('div');
+  const app = __createVueApp({
+    render: () => __h(component, { data, context })
+  });
+  app.mount(container);
+  return container.firstElementChild;
+}`);
+    }
+
+    if (hasReact) {
+      helpers.push(`
+// Helper to wrap React components
+import { renderToStaticMarkup as __renderToStaticMarkup } from 'react-dom/server';
+import { createElement as __createElement } from 'react';
+function __wrapReactComponent(Component, data, context) {
+  const html = __renderToStaticMarkup(__createElement(Component, { data, context }));
+  const temp = document.createElement('div');
+  temp.innerHTML = html;
+  return temp.firstElementChild;
+}`);
+    }
+
+    return helpers.join('\n');
+  }
+
+  /**
    * Generate exports object with all blocks
    */
   generateExports(blocks: BlockDefinition[]): string {
@@ -78,11 +136,30 @@ ${metadata}
 
     for (const block of blocks) {
       const varName = this.getVarName(block.name);
+      const renderPath = block.files.renderPath;
+
+      // Determine render function based on file extension
+      let renderFunction: string;
+      if (renderPath.endsWith('.vue')) {
+        renderFunction = `(data, context) => __wrapVueComponent(${varName}RenderComponent, data, context)`;
+      } else if (renderPath.endsWith('.tsx') || renderPath.endsWith('.jsx')) {
+        // Support both default export (component) and named export (render function)
+        renderFunction = `(data, context) => {
+      if (${varName}RenderModule.render) {
+        return ${varName}RenderModule.render(data, context);
+      } else if (${varName}RenderModule.default) {
+        return __wrapReactComponent(${varName}RenderModule.default, data, context);
+      }
+      throw new Error('${block.name}: render.tsx must export either a render function or default component');
+    }`;
+      } else {
+        renderFunction = `${varName}Render`;
+      }
 
       blockEntries.push(`  '${block.name}': {
     edit: ${varName}Edit,
     save: ${varName}Save,
-    render: ${varName}Render,${block.files.previewPath ? `\n    preview: ${varName}Preview,` : ''}
+    render: ${renderFunction},${block.files.previewPath ? `\n    preview: ${varName}Preview,` : ''}
     meta: ${JSON.stringify(block.meta, null, 6).replace(/\n/g, '\n    ')}
   }`);
     }
