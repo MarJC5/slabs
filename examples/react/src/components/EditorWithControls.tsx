@@ -114,6 +114,8 @@ export function EditorWithControls({
 
       // Clear handler
       const handleClear = () => {
+        clearButtonRef.current?.flash(); // Flash for visual feedback
+        
         try {
           editor.clear();
           state.markClean();

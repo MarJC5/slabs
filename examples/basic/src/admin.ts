@@ -81,6 +81,8 @@ async function handleSave() {
 
 // Clear handler function
 function handleClear() {
+  clearButton.flash();
+  
   try {
     editor.clear();
     state.markClean();

@@ -112,6 +112,8 @@ onMounted(async () => {
 
   // Clear handler
   const handleClear = () => {
+    clearButton?.flash();
+
     try {
       if (!editor) return;
       editor.clear();

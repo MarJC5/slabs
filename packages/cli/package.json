@@ -1,0 +1,50 @@
+{
+  "name": "@slabs/cli",
+  "version": "0.0.1",
+  "description": "CLI tool for scaffolding Slabs blocks",
+  "type": "module",
+  "bin": {
+    "slabs": "./dist/index.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "slabs",
+    "cli",
+    "scaffold",
+    "blocks",
+    "editorjs"
+  ],
+  "author": "Martin",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^12.1.0",
+    "@inquirer/prompts": "^7.0.1",
+    "handlebars": "^4.7.8",
+    "chalk": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@types/handlebars": "^4.1.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8",
+    "@vitest/coverage-v8": "^2.1.8"
+  }
+}
